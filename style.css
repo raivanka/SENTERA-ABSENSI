@@ -1,5 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+/* ================================================================
+   DESIGN TOKENS — Obsidian Aurora (Dark Mode)
+   Source: Stitch Design System "Obsidian Aurora"
+   Asset: assets/4585811cc97e484b8d72ce415ec68a7c
+   ================================================================ */
+
+:root {
+  /* === Brand Colors === */
+  --color-primary: #818cf8;            /* Vibrant Violet */
+  --color-primary-container: #bdc2ff;
+  --color-on-primary: #131e8c;
+
+  --color-secondary: #c7d2fe;            /* Muted Periwinkle */
+  --color-secondary-container: #3a456a;
+  --color-on-secondary: #242f52;
+
+  --color-tertiary: #3cddc7;            /* Teal / Success */
+  --color-tertiary-container: #00a896;
+  --color-on-tertiary: #003731;
+
+  /* === Background & Surfaces === */
+  --color-background: #0b1326;         /* Deep Navy — Stitch Obsidian Aurora */
+  --color-on-primary-fixed-variant: #2f3aa3;
+  --color-surface: #1e293b;            /* Surface Navy (cards) */
+  --color-surface-variant: #2d3449;    /* Surface Slate (Stitch Obsidian Aurora) */
+  --color-surface-low: #131b2e;
+  --color-surface-lowest: #060e20;
+
+  /* === On-Surface Text === */
+  --color-on-background: #dae2fd;
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #c6c5d5;
+
+  /* === Outline & Borders === */
+  --color-outline: #908f9e;
+  --color-outline-variant: #454653;
+  --color-border-glow: rgba(129, 140, 248, 0.15);
+
+  /* === Error === */
+  --color-error: #fb7185;              /* Rose (Stitch error-vibrant) */
+  --color-error-vibrant: #fb7185;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+
+  /* === Semantic Status Colors (Attendance) === */
+  --status-hadir-bg: rgba(61, 221, 199, 0.10);
+  --status-hadir-text: var(--color-tertiary);
+  --status-terlambat-bg: rgba(245, 158, 11, 0.10);
+  --status-terlambat-text: #f59e0b;
+  --status-sakit-bg: rgba(56, 189, 248, 0.10);
+  --status-sakit-text: #38bdf8;
+  --status-izin-bg: rgba(192, 132, 240, 0.10);
+  --status-izin-text: #c084fc;
+  --status-alpa-bg: rgba(251, 113, 133, 0.10);
+  --status-alpa-text: var(--color-error);
+
+  /* === Typography (Manrope) === */
+  --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display-xl: 4rem;
+  --font-display-xl-mobile: 2.5rem;
+  --font-headline-lg: 2rem;
+  --font-headline-md: 1.5rem;
+  --font-body-lg: 1.125rem;
+  --font-body-md: 1rem;
+  --font-label-md: 0.875rem;
+  --font-label-sm: 0.75rem;
+  --line-height-display: 1.125;
+  --line-height-body: 1.5;
+  --line-height-label: 1.25;
+
+  /* === Border Radius === */
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* === Spacing (8px base unit) === */
+  --spacing-unit: 0.5rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-container-max: 75rem;
+  --spacing-section-gap: 7.5rem;
+  --spacing-margin-mobile: 1.25rem;
+  --spacing-margin-desktop: 4rem;
+}
+
+/* ================================================================
+   BASE STYLES
+   ================================================================ */
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-size: var(--font-body-md);
+  line-height: var(--line-height-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;   /* ⬅️ tambahan ini yang paling penting */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family);
+  color: var(--color-on-background);
+}
+
+/* ================================================================
+   BASE SURFACE OVERRIDES — Obsidian Aurora palette
+   ================================================================ */
+
+.bg-slate-900,
+.bg-slate-950 {
+  background-color: var(--color-background) !important;
+}
+
+.bg-slate-800,
+.bg-slate-800\/90,
+.bg-slate-800\/80,
+.bg-slate-800\/50 {
+  background-color: var(--color-surface) !important;
+}
+
+.bg-slate-900\/80,
+.bg-slate-900\/70,
+.bg-slate-900\/10,
+.bg-slate-800\/30 {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+.text-slate-100,
+.text-white {
+  color: var(--color-on-background) !important;
+}
+
+.text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+.text-slate-400 {
+  color: var(--color-on-surface-variant) !important;
+}
+
+.text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+.border-slate-700,
+.border-slate-700\/50,
+.border-slate-700\/80,
+.border-slate-700\/60,
+.border-slate-700\/30 {
+  border-color: var(--color-surface-variant) !important;
+}
+
+.border-slate-600 {
+  border-color: #475569 !important;
+}
+
+.divide-slate-700\/50 {
+  border-color: rgba(51, 65, 85, 0.5) !important;
+}
+
+/* ================================================================
+   PRIMARY BUTTONS — Emerald -> Violet (Obsidian Aurora)
+   Used in: login.html, dashboard.html, index.html
+   ================================================================ */
+
+.bg-emerald-500 {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-emerald-500\/5 {
+  background-color: rgba(61, 221, 199, 0.05) !important;
+}
+
+.bg-emerald-500\/10 {
+  background-color: var(--status-hadir-bg) !important;
+}
+
+.bg-emerald-500\/20 {
+  background-color: rgba(61, 221, 199, 0.15) !important;
+}
+
+.text-emerald-400 {
+  color: var(--color-tertiary) !important;
+}
+
+.hover\:bg-emerald-600:hover {
+  background-color: #6366f1 !important;
+}
+
+.border-emerald-500\/30,
+.border-emerald-500\/20 {
+  border-color: var(--color-tertiary) !important;
+}
+
+.focus\:border-emerald-400:focus {
+  border-color: var(--color-primary) !important;
+}
+.focus\:border-primary:focus {
+  border-color: var(--color-primary) !important;
+}
+.focus\:ring-primary:focus {
+  --tw-ring-color: var(--color-primary);
+}
+
+/* ================================================================
+   STATUS BADGES — JS-managed classes
+   scanner.js (classList) + dashboard.js (innerHTML)
+   ================================================================ */
+
+/* --- Terlambat (Warning) — Amber --- */
+.bg-amber-500\/10 {
+  background-color: var(--status-terlambat-bg) !important;
+}
+.bg-amber-500\/20 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+.text-amber-400 {
+  color: var(--status-terlambat-text) !important;
+}
+.bg-amber-500 {
+  background-color: #f59e0b !important;
+}
+.hover\:bg-amber-600:hover {
+  background-color: #d97706 !important;
+}
+
+/* --- Sakit (Info) — Cyan --- */
+.bg-blue-500\/10 {
+  background-color: var(--status-sakit-bg) !important;
+}
+.bg-blue-500\/20 {
+  background-color: rgba(56, 189, 248, 0.15) !important;
+}
+.text-blue-400 {
+  color: var(--status-sakit-text) !important;
+}
+.border-blue-500\/30,
+.border-blue-500\/20 {
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+/* --- Izin — Purple --- */
+.bg-purple-500\/10 {
+  background-color: var(--status-izin-bg) !important;
+}
+.bg-purple-500\/20 {
+  background-color: rgba(192, 132, 240, 0.15) !important;
+}
+.text-purple-400 {
+  color: var(--status-izin-text) !important;
+}
+.border-purple-500\/30,
+.border-purple-500\/20 {
+  border-color: rgba(192, 132, 240, 0.3) !important;
+}
+
+/* --- Alpa (Error) — Rose/Error --- */
+.bg-rose-500\/10 {
+  background-color: var(--status-alpa-bg) !important;
+}
+.bg-rose-500\/20 {
+  background-color: rgba(251, 113, 133, 0.15) !important;
+}
+.text-rose-400,
+.text-rose-500 {
+  color: var(--color-error) !important;
+}
+.border-rose-500\/30,
+.border-rose-500\/20 {
+  border-color: rgba(251, 113, 133, 0.3) !important;
+}
+
+/* --- Hover row --- */
+.hover\:bg-slate-700\/30:hover {
+  background-color: rgba(51, 65, 85, 0.30) !important;
+}
+
+/* --- Focus borders --- */
+.focus\:border-amber-400:focus,
+.focus\:border-amber-500:focus {
+  border-color: #f59e0b !important;
+}
+.focus\:border-blue-500:focus {
+  border-color: #38bdf8 !important;
+}
+.focus\:border-slate-600:focus {
+  border-color: var(--color-surface-variant) !important;
+}
+
+/* ================================================================
+   BORDER-GLOW EFFECT (Obsidian Aurora elevation)
+   ================================================================ */
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 0 1px var(--color-border-glow);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+              0 0 0 1px var(--color-border-glow);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+              0 0 0 1px var(--color-border-glow);
+}
+
+/* ================================================================
+   COMPONENT CLASSES — Obsidian Aurora Glassmorphism
+   Used by login.html "Login Portal Dark" design
+   ================================================================ */
+
+.glass-panel {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-glow);
+}
+
+.ambient-shadow {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.border-glow {
+  box-shadow: 0 0 12px var(--color-border-glow);
+}
+
+/* ================================================================
+   SEMANTIC UTILITY CLASSES — Obsidian Aurora
+   Used by index.html "Portal Publik v3" design
+   ================================================================ */
+
+.text-primary { color: var(--color-primary) !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+.text-on-primary { color: var(--color-on-primary) !important; }
+.bg-on-primary { background-color: var(--color-on-primary) !important; }
+.text-on-surface { color: var(--color-on-surface) !important; }
+.text-on-surface-variant { color: var(--color-on-surface-variant) !important; }
+.bg-surface-container-low { background-color: var(--color-surface-low) !important; }
+.bg-surface-container-lowest { background-color: var(--color-surface-lowest) !important; }
+.bg-background { background-color: var(--color-background) !important; }
+
+.bg-secondary-container { background-color: var(--color-secondary-container) !important; }
+.text-on-secondary-container { color: var(--color-on-secondary) !important; }
+.bg-tertiary-container { background-color: var(--color-tertiary-container) !important; }
+.text-tertiary { color: var(--color-tertiary) !important; }
+.bg-error-container { background-color: var(--color-error-container) !important; }
+.text-on-error-container { color: #ffdad6 !important; }
+.text-error { color: var(--color-error) !important; }
+.text-outline { color: var(--color-outline) !important; }
+.text-outline-variant { color: var(--color-outline-variant) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
+.border-outline { border-color: var(--color-outline) !important; }
+.border-outline-variant { border-color: var(--color-outline-variant) !important; }
+.bg-primary-fixed { background-color: var(--color-primary-container) !important; }
+.bg-secondary-fixed { background-color: var(--color-secondary) !important; }
+.hover-bg-inverse-primary:hover { background-color: var(--color-on-primary) !important; }
+.hover\:bg-inverse-primary:hover { background-color: var(--color-on-primary) !important; }
+.hover\:bg-surface-container-low:hover { background-color: var(--color-surface-low) !important; }
+.hover\:bg-rose-500\/20:hover { background-color: rgba(251, 113, 133, 0.15) !important; }
+.bg-rose-500\/20 { background-color: rgba(251, 113, 133, 0.15) !important; }
+.text-on-primary-fixed-variant { color: var(--color-on-primary-fixed-variant, #f8fafc) !important; }
+.bg-surface { background-color: var(--color-surface) !important; }
+.bg-surface\/50 { background-color: rgba(30, 41, 59, 0.5) !important; }
+.bg-surface\/80 { background-color: rgba(30, 41, 59, 0.85) !important; }
+.bg-surface-low { background-color: var(--color-surface-low) !important; }
+.bg-primary-container { background-color: var(--color-primary-container) !important; }
+.bg-primary-container\/20 { background-color: rgba(189, 194, 255, 0.15) !important; }
+.bg-secondary-container { background-color: var(--color-secondary-container) !important; }
+.bg-tertiary-container { background-color: var(--color-tertiary-container) !important; }
+.bg-error-container { background-color: var(--color-error-container) !important; }
+.border-surface-variant { border-color: var(--color-surface-variant) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
+.border-tertiary { border-color: var(--color-tertiary) !important; }
+.hover\:bg-surface:hover { background-color: var(--color-surface) !important; }
+.hover\:text-primary:hover { color: var(--color-primary) !important; }
+.hover\:text-outline:hover { color: var(--color-outline) !important; }
+.hover\:text-on-primary-fixed-variant:hover { color: var(--color-on-primary-fixed-variant, #f8fafc) !important; }
+.border-slate-700\/80 { border-color: rgba(51, 65, 85, 0.30) !important; }
+.text-slate-200 { color: var(--color-on-surface-variant) !important; }
+.hover\:bg-slate-600:hover { background-color: var(--color-surface-variant) !important; }
+.border-emerald-500\/40 { border-color: rgba(61, 221, 199, 0.30) !important; }
+.bg-surface-container-low\/80 { background-color: rgba(19, 27, 46, 0.8) !important; }
+.bg-tertiary-container\/5 { background-color: rgba(0, 168, 150, 0.05) !important; }
+.bg-tertiary-container\/10 { background-color: rgba(0, 168, 150, 0.10) !important; }
+.bg-tertiary-container\/20 { background-color: rgba(0, 168, 150, 0.15) !important; }
+.bg-tertiary { background-color: var(--color-tertiary) !important; }
+.bg-tertiary\/5 { background-color: rgba(61, 221, 199, 0.05) !important; }
+.bg-tertiary\/10 { background-color: rgba(61, 221, 199, 0.10) !important; }
+.border-tertiary\/20 { border-color: rgba(61, 221, 199, 0.15) !important; }
+.border-tertiary\/30 { border-color: rgba(61, 221, 199, 0.30) !important; }
+.border-tertiary-container\/20 { border-color: rgba(0, 168, 150, 0.15) !important; }
+.border-outline-variant\/30 { border-color: rgba(69, 70, 83, 0.30) !important; }
+.bg-error-container\/20 { background-color: rgba(147, 0, 10, 0.15) !important; }
+.text-on-primary { color: var(--color-on-primary) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.text-on-secondary { color: var(--color-on-secondary) !important; }
+
+/* Typography utilities (Obsidian Aurora / Manrope) */
+.font-display-xl,
+.font-display-xl-mobile { font-family: var(--font-family); font-weight: 800; }
+.text-display-xl { font-size: 4rem; line-height: 5.75rem; letter-spacing: -0.02em; font-weight: 800; }
+.text-display-xl-mobile { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 800; }
+.font-headline-lg { font-family: var(--font-family); font-weight: 700; }
+.text-headline-lg { font-size: 2rem; line-height: 2.5rem; font-weight: 700; }
+.font-headline-md { font-family: var(--font-family); font-weight: 600; }
+.text-headline-md { font-size: 1.5rem; line-height: 2rem; font-weight: 600; }
+.font-body-lg { font-family: var(--font-family); font-weight: 400; }
+.text-body-lg { font-size: 1.125rem; line-height: 1.75rem; font-weight: 400; }
+.font-body-md { font-family: var(--font-family); font-weight: 400; }
+.text-body-md { font-size: 1rem; line-height: 1.5rem; font-weight: 400; }
+.font-label-md { font-family: var(--font-family); font-weight: 600; }
+.text-label-md { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; }
+.font-label-sm { font-family: var(--font-family); font-weight: 700; }
+.text-label-sm { font-size: 0.75rem; line-height: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+
+/* Glass card variant (higher opacity, used by index.html Stitch design) */
+.glass-card {
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-glow);
 }

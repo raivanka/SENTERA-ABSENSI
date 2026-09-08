@@ -46,12 +46,12 @@ function loadDashboardData() {
             <td class="px-4 py-3 whitespace-nowrap">${statusBadge}</td>
             <td class="px-4 py-3 text-xs text-slate-400">${item.keterangan || "-"}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap space-x-1">
-              <button onclick="editData(${item.rowIndex}, '${item.nama}', '${item.status}', '${item.keterangan}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 p-1.5 rounded-lg border border-amber-500/30 text-xs">
-                ✏️ Edit
-              </button>
-              <button onclick="hapusData(${item.rowIndex}, '${item.nama}')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 p-1.5 rounded-lg border border-rose-500/30 text-xs">
-                🗑️ Hapus
-              </button>
+               <button onclick="editData(${item.rowIndex}, '${escapeJS(item.nama)}', '${escapeJS(item.status)}', '${escapeJS(item.keterangan)}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 p-1.5 rounded-lg border border-amber-500/30 text-xs">
+                 ✏️ Edit
+               </button>
+               <button onclick="hapusData(${item.rowIndex}, '${escapeJS(item.nama)}')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 p-1.5 rounded-lg border border-rose-500/30 text-xs">
+                 🗑️ Hapus
+               </button>
             </td>
           </tr>
         `;
@@ -111,4 +111,6 @@ function logout() {
   window.location.replace("login.html");
 }
 
-document.addEventListener("DOMContentLoaded", loadDashboardData);
+function escapeJS(str) {
+  return String(str || '').replace(/'/g, "\\'");
+}

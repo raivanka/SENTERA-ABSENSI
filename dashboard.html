@@ -4,184 +4,212 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin - E-Absensi</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Masukkan Chart.js untuk grafik doughnut -->
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+  <style>
+    body { overflow-x: hidden; 
+      background: linear-gradient(135deg, #0b1326 0%, #060e20 100%); 
+      min-height: 100vh; }
+  </style>
   <script>
     if (localStorage.getItem("isLoggedIn") !== "true" || !localStorage.getItem("sessionToken")) {
       window.location.replace("login.html");
     }
   </script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="text-on-surface antialiased min-h-screen flex flex-col font-body-md overflow-x-hidden">
 
-  <!-- NAVBAR -->
-  <header class="bg-slate-800 border-b border-slate-700 px-4 sm:px-6 py-4 flex justify-between items-center sticky top-0 z-40">
-    <div class="flex items-center space-x-2 sm:space-x-3">
-      <span class="text-xl sm:text-2xl">📊</span>
-      <h1 class="font-bold text-base sm:text-lg text-white">DASHBOARD <span class="text-emerald-400">ADMIN</span></h1>
-    </div>
+  <div class="absolute top-[-200px] right-[-100px] w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] lg:w-[600px] lg:h-[600px] bg-primary-fixed opacity-10 rounded-full blur-[80px] sm:blur-[100px] -z-10 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-[-200px] w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] lg:w-[800px] lg:h-[800px] bg-secondary-fixed opacity-10 rounded-full blur-[80px] sm:blur-[120px] -z-10 pointer-events-none"></div>
 
-    <div class="flex items-center space-x-2 sm:space-x-3">
-      <a href="scanner.html" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs transition flex items-center gap-1">
-        📷 Buka Kios Scanner
-      </a>
-      <button onclick="logout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition">
-        🚪 Logout
-      </button>
+  <header class="bg-surface/80 backdrop-blur-md border-b border-outline-variant shadow-sm sticky top-0 z-40">
+    <div class="flex justify-between items-center px-5 md:px-8 w-full max-w-[1440px] mx-auto h-16">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <span class="text-xl sm:text-2xl">📊</span>
+        <h1 class="font-bold text-base sm:text-headline-md text-on-surface">DASHBOARD <span class="text-primary">ADMIN</span></h1>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="scanner.html" class="bg-primary text-on-primary font-bold px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-label-md transition-colors hover:bg-inverse-primary shadow-md flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-lg">qr_code_scanner</span> <span class="hidden sm:inline">Buka Scanner</span>
+        </a>
+        <button onclick="logout()" class="text-error border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-lg">logout</span> <span class="hidden sm:inline">Logout</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- CONTENT -->
-  <main class="max-w-6xl mx-auto px-3 sm:px-6 py-6 flex-1 w-full space-y-6">
+  <main class="flex-grow w-full max-w-[1440px] mx-auto px-5 md:px-8 py-6 md:py-8 flex flex-col gap-6">
 
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-xl sm:text-2xl font-bold text-white">Ringkasan Absensi</h2>
-        <p class="text-xs text-slate-400">Kelola dan pantau data kehadiran siswa real-time</p>
+        <h2 class="text-xl sm:text-headline-lg font-bold text-on-surface">Ringkasan Absensi</h2>
+        <p class="text-xs sm:text-label-sm text-on-surface-variant mt-0.5">Kelola dan pantau data kehadiran siswa real-time</p>
       </div>
-      <div class="flex items-center gap-2">
-        <select id="pilihBulanCsv" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-blue-500">
-            <option value="all">Semua Bulan / Total</option>
-            <option value="01">Januari</option>
-            <option value="02">Februari</option>
-            <option value="03">Maret</option>
-            <option value="04">April</option>
-            <option value="05">Mei</option>
-            <option value="06">Juni</option>
-            <option value="07">Juli</option>
-            <option value="08" selected>Agustus (Bulan Ini)</option>
-            <option value="09">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
-          </select>
-          <button onclick="exportCSV()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-md">
-            📥 Download Rekap (.csv)
-          </button>
-        <button onclick="loadDashboardData()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
+        <select id="pilihBulan" class="bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-primary transition-colors">
+          <option value="all">Semua Bulan / Total</option>
+          <option value="01">Januari</option>
+          <option value="02">Februari</option>
+          <option value="03">Maret</option>
+          <option value="04">April</option>
+          <option value="05">Mei</option>
+          <option value="06">Juni</option>
+          <option value="07">Juli</option>
+          <option value="08" selected>Agustus (Bulan Ini)</option>
+          <option value="09">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+        <button onclick="exportCSV()" class="bg-primary text-on-primary px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors hover:bg-inverse-primary shadow-md flex items-center gap-1.5">
+          📥 <span class="hidden sm:inline">Download Rekap (.csv)</span><span class="sm:hidden">Export</span>
+        </button>
+        <button onclick="loadDashboardData()" class="bg-surface-container-low border border-outline-variant px-3 py-1.5 rounded-xl text-xs font-medium transition-colors hover:bg-surface-container-low flex items-center gap-2">
           🔄 Refresh
         </button>
       </div>
     </div>
 
-    <!-- CARDS STATISTIK ANGKA -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
-      <div class="bg-slate-800/90 border border-slate-700 p-3 sm:p-4 rounded-2xl">
-        <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Total Absen</p>
-        <h3 id="stat-total" class="text-xl sm:text-2xl font-bold text-white mt-1">0</h3>
-      </div>
-      <div class="bg-slate-800/90 border border-emerald-500/30 p-3 sm:p-4 rounded-2xl bg-emerald-500/5">
-        <p class="text-[10px] sm:text-xs text-emerald-400 font-medium">Hadir</p>
-        <h3 id="stat-hadir" class="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">0</h3>
-      </div>
-      <div class="bg-slate-800/90 border border-amber-500/30 p-3 sm:p-4 rounded-2xl bg-amber-500/5">
-        <p class="text-[10px] sm:text-xs text-amber-400 font-medium">Terlambat</p>
-        <h3 id="stat-terlambat" class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">0</h3>
-      </div>
-      <div class="bg-slate-800/90 border border-blue-500/30 p-3 sm:p-4 rounded-2xl bg-blue-500/5">
-        <p class="text-[10px] sm:text-xs text-blue-400 font-medium">Sakit</p>
-        <h3 id="stat-sakit" class="text-xl sm:text-2xl font-bold text-blue-400 mt-1">0</h3>
-      </div>
-      <div class="bg-slate-800/90 border border-purple-500/30 p-3 sm:p-4 rounded-2xl bg-purple-500/5">
-        <p class="text-[10px] sm:text-xs text-purple-400 font-medium">Izin</p>
-        <h3 id="stat-izin" class="text-xl sm:text-2xl font-bold text-purple-400 mt-1">0</h3>
-      </div>
-      <div class="bg-slate-800/90 border border-rose-500/30 p-3 sm:p-4 rounded-2xl bg-rose-500/5">
-        <p class="text-[10px] sm:text-xs text-rose-400 font-medium">Alpa</p>
-        <h3 id="stat-alpa" class="text-xl sm:text-2xl font-bold text-rose-400 mt-1">0</h3>
-      </div>
-    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
 
-    <!-- PANEL UTAMA: INPUT MANUAL & GRAFIK STATISTIK (2 Kolom) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      
-      <!-- Kolom 1: Form Input Absen Manual -->
-      <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3 shadow-md flex flex-col justify-between">
+      <div class="glass-card rounded-[20px] p-5 sm:p-6 ambient-shadow flex flex-col justify-between min-h-[120px]">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] sm:text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">TOTAL ABSEN</span>
+          <span class="material-symbols-outlined text-primary bg-primary-container/20 p-2 rounded-xl text-xl">groups</span>
+        </div>
         <div>
-          <h3 class="font-bold text-sm text-amber-400 mb-3">📝 Input / Koreksi Absen Manual</h3>
-          <div class="space-y-2">
-            <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Pilih Tanggal Absen:</label>
-              <input type="date" id="manualTanggal" class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400">
-            </div>
-            <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Pilih Siswa:</label>
-              <select id="manualNisn" class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400">
-                <option value="">-- Muat Daftar Siswa --</option>
-              </select>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[10px] text-slate-400 mb-1">Status Kehadiran:</label>
-                <select id="manualStatus" class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400">
-                  <option value="Hadir">Hadir</option>
-                  <option value="Terlambat">Terlambat</option>
-                  <option value="Sakit">Sakit</option>
-                  <option value="Izin">Izin</option>
-                  <option value="Alpa">Alpa</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-[10px] text-slate-400 mb-1">Keterangan:</label>
-                <input type="text" id="manualKeterangan" placeholder="Opsional..." class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400">
-              </div>
-            </div>
+          <h3 id="stat-total" class="text-3xl sm:text-4xl font-bold text-on-surface">0</h3>
+          <p class="text-xs text-on-surface-variant mt-0.5">Siswa Terdaftar</p>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-[20px] p-5 sm:p-6 ambient-shadow flex flex-col justify-between min-h-[120px] bg-tertiary/5 border-tertiary/20">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] sm:text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">TINGKAT KEHADIRAN</span>
+          <span class="material-symbols-outlined text-tertiary bg-tertiary-container/20 p-2 rounded-xl text-xl">check_circle</span>
+        </div>
+        <div class="flex gap-5 sm:gap-6">
+          <div>
+            <h3 id="stat-hadir" class="text-2xl sm:text-3xl font-bold text-tertiary">0</h3>
+            <p class="text-[10px] sm:text-xs text-on-surface-variant">Hadir Tepat Waktu</p>
+          </div>
+          <div class="border-l border-outline-variant/30 pl-5 sm:pl-6">
+            <h3 id="stat-terlambat" class="text-2xl sm:text-3xl font-bold text-amber-400">0</h3>
+            <p class="text-[10px] sm:text-xs text-on-surface-variant">Terlambat</p>
           </div>
         </div>
-        <button onclick="simpanAbsenManual()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition mt-3">
-          Simpan Absen Manual
-        </button>
       </div>
 
-      <!-- Kolom 2: Grafik Statistik Doughnut (Mirip Referensi) -->
-      <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3 shadow-md flex flex-col justify-between">
-        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-          <h3 class="font-bold text-sm text-emerald-400">📊 Proporsi Status Kehadiran</h3>
-          <span id="badge-persen-global" class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded font-bold">0%</span>
+      <div class="glass-card rounded-[20px] p-5 sm:p-6 ambient-shadow flex flex-col justify-between min-h-[120px] sm:col-span-2 lg:col-span-1">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] sm:text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">KETIDAKHADIRAN</span>
+          <span class="material-symbols-outlined text-error bg-error-container/20 p-2 rounded-xl text-xl">cancel</span>
         </div>
-        <!-- Kanvas Grafik -->
-        <div class="relative h-48 w-full flex justify-center items-center">
-          <canvas id="adminGrafikStatistik"></canvas>
+        <div class="flex gap-3 sm:gap-4">
+          <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 sm:px-4 py-2 text-center flex-1">
+            <h3 id="stat-sakit" class="text-xl sm:text-2xl font-bold text-blue-400">0</h3>
+            <p class="text-[10px] text-on-surface-variant flex items-center justify-center gap-1"><span class="text-blue-400">🤒</span> Sakit</p>
+          </div>
+          <div class="bg-purple-500/10 border border-purple-500/20 rounded-xl px-3 sm:px-4 py-2 text-center flex-1">
+            <h3 id="stat-izin" class="text-xl sm:text-2xl font-bold text-purple-400">0</h3>
+            <p class="text-[10px] text-on-surface-variant flex items-center justify-center gap-1"><span class="text-purple-400">📋</span> Izin</p>
+          </div>
+          <div class="bg-rose-500/10 border border-rose-500/20 rounded-xl px-3 sm:px-4 py-2 text-center flex-1">
+            <h3 id="stat-alpa" class="text-xl sm:text-2xl font-bold text-rose-400">0</h3>
+            <p class="text-[10px] text-on-surface-variant flex items-center justify-center gap-1"><span class="text-rose-400">❌</span> Alpa</p>
+          </div>
         </div>
-        <p class="text-[10px] text-slate-400 text-center">Visualisasi perbandingan total status kehadiran keseluruhan</p>
       </div>
 
     </div>
 
-    <!-- TABEL REKAP ABSENSI SISWA + SEARCH BAR -->
-    <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
-      <div class="p-4 border-b border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <div>
-          <h3 class="font-bold text-sm sm:text-base text-white">📋 Data Rekap Harian</h3>
-          <p class="text-[10px] text-slate-400">*Pantau dan cari data log absensi masuk</p>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-5">
+
+      <div class="glass-card rounded-[20px] p-5 sm:p-6 ambient-shadow lg:col-span-3 flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-bold text-sm sm:text-base text-on-surface">📊 Distribusi Kehadiran</h3>
+          <span id="badge-persen-global" class="bg-tertiary/10 text-tertiary text-xs sm:text-label-sm px-2.5 py-0.5 rounded-lg font-bold border border-tertiary/20">0%</span>
         </div>
-        
-        <!-- Search Bar Admin -->
-        <div class="relative w-full sm:w-64">
-          <input type="text" id="searchAdminTabel" 
-                 class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl pl-8 pr-3 py-2 focus:outline-none focus:border-emerald-400" 
-                 placeholder="Cari nama / NISN / status..." onkeyup="filterAdminTabel()">
-          <span class="absolute left-2.5 top-2.5 text-slate-500 text-xs">🔍</span>
+        <div class="relative flex-1 min-h-[280px] sm:min-h-[320px] flex justify-center items-center">
+          <canvas id="adminGrafikStatistik"></canvas>
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span id="chart-center-total" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface">0</span>
+            <span class="text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-widest font-semibold">Total Data</span>
+          </div>
         </div>
       </div>
 
-      <!-- Container Scroll Horizontal untuk Mobile -->
-      <div class="overflow-x-auto w-full">
+      <div class="glass-card rounded-[20px] p-5 sm:p-6 ambient-shadow lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-sm sm:text-base text-on-surface">📝 Input Manual</h3>
+          <span class="text-[10px] text-on-surface-variant bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-lg font-semibold border border-amber-500/20">Admin</span>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] sm:text-xs text-on-surface-variant mb-1 font-semibold">Pilih Tanggal Absen:</label>
+            <input type="date" id="manualTanggal" class="w-full bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl px-3 py-2.5 focus:outline-none focus:border-primary transition-colors">
+          </div>
+          <div>
+            <label class="block text-[10px] sm:text-xs text-on-surface-variant mb-1 font-semibold">Pilih Siswa:</label>
+            <select id="manualNisn" class="w-full bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl px-3 py-2.5 focus:outline-none focus:border-primary transition-colors">
+              <option value="">-- Muat Daftar Siswa --</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] sm:text-xs text-on-surface-variant mb-1 font-semibold">Status:</label>
+              <select id="manualStatus" class="w-full bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl px-3 py-2.5 focus:outline-none focus:border-primary transition-colors">
+                <option value="Hadir">Hadir</option>
+                <option value="Terlambat">Terlambat</option>
+                <option value="Sakit">Sakit</option>
+                <option value="Izin">Izin</option>
+                <option value="Alpa">Alpa</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] sm:text-xs text-on-surface-variant mb-1 font-semibold">Keterangan:</label>
+              <input type="text" id="manualKeterangan" placeholder="Opsional..." class="w-full bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl px-3 py-2.5 focus:outline-none focus:border-primary transition-colors">
+            </div>
+          </div>
+          <button onclick="simpanAbsenManual()" class="w-full bg-amber-500 hover:bg-amber-600 text-on-primary font-bold px-4 py-2.5 rounded-xl text-xs sm:text-label-md transition-colors shadow-md mt-2 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-base">save</span> Simpan Absen Manual
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="glass-card rounded-[20px] overflow-hidden ambient-shadow">
+      <div class="p-4 sm:p-5 border-b border-outline-variant/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <h3 class="font-bold text-sm sm:text-base text-on-surface">📋 Data Rekap Harian</h3>
+          <p class="text-[10px] text-on-surface-variant mt-0.5">*Pantau dan cari data log absensi masuk</p>
+        </div>
+        <div class="relative w-full sm:w-64">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-base">search</span>
+          <input type="text" id="searchAdminTabel"
+            class="w-full bg-surface-low border border-outline-variant text-xs text-on-surface rounded-xl pl-10 pr-3 py-2.5 focus:outline-none focus:border-primary transition-colors"
+            placeholder="Cari nama / NISN / status..." onkeyup="filterAdminTabel()">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
         <table class="w-full text-left text-xs sm:text-sm text-slate-300">
-          <thead class="bg-slate-900/80 text-slate-400 uppercase text-[10px] sm:text-xs tracking-wider">
+          <thead class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] sm:text-xs tracking-wider">
             <tr>
               <th class="px-4 py-3">Waktu / Tgl</th>
               <th class="px-4 py-3">NISN & Nama</th>
               <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3">Keterangan</th>
+              <th class="px-4 py-3 hidden sm:table-cell">Keterangan</th>
               <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody id="tabel-rekap-body" class="divide-y divide-slate-700/50">
+          <tbody id="tabel-rekap-body" class="divide-y divide-surface-variant/30">
             <tr>
-              <td colspan="5" class="text-center py-6 text-slate-500">Memuat data...</td>
+              <td colspan="5" class="text-center py-6 text-on-surface-variant">Memuat data...</td>
             </tr>
           </tbody>
         </table>
@@ -190,17 +218,16 @@
 
   </main>
 
+  
   <script src="dashboard.js"></script>
   <script>
     let adminChartInstance = null;
 
-    // Set default tanggal hari ini & load list siswa
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split('T')[0];
       const dateInput = document.getElementById("manualTanggal");
       if(dateInput) dateInput.value = today;
 
-      // Ambil list siswa untuk dropdown input manual
       fetch(`${API_URL}?action=getAllSiswa`)
         .then(res => res.json())
         .then(data => {
@@ -208,17 +235,18 @@
           if(select && Array.isArray(data)) {
             select.innerHTML = '<option value="">-- Pilih Siswa --</option>';
             data.forEach(s => {
-              select.innerHTML += `<option value="${s.nisn}">${s.nama} (${s.nisn})</option>`;
+              const opt = document.createElement('option');
+              opt.value = s.nisn;
+              opt.textContent = s.nama + ' (' + s.nisn + ')';
+              select.appendChild(opt);
             });
           }
         })
         .catch(err => console.error("Gagal load list siswa:", err));
 
-      // Muat data grafik awal
-      loadAdminChart();
+      loadDashboardData();
     });
 
-    // Fungsi Render Grafik Doughnut di Admin
     function loadAdminChart() {
       fetch(`${API_URL}?action=getRekap`)
         .then(res => res.json())
@@ -228,13 +256,16 @@
           const sakit = data.sakit || 0;
           const izin = data.izin || 0;
           const alpa = data.alpa || 0;
-          const total = data.total || 1; // Hindari bagi 0
+          const total = data.total || 1;
 
           const persenHadir = Math.round(((hadir + terlambat) / total) * 100);
           document.getElementById("badge-persen-global").innerText = persenHadir + "% Kehadiran";
 
+          const chartTotal = document.getElementById("chart-center-total");
+          if (chartTotal) chartTotal.innerText = total;
+
           const ctx = document.getElementById('adminGrafikStatistik').getContext('2d');
-          
+
           if (adminChartInstance) {
             adminChartInstance.destroy();
           }
@@ -246,11 +277,11 @@
               datasets: [{
                 data: [hadir, terlambat, sakit, izin, alpa],
                 backgroundColor: [
-                  '#14b8a6', // Teal / Hadir
-                  '#f59e0b', // Amber / Terlambat
-                  '#38bdf8', // Biru / Sakit
-                  '#c084fc', // Ungu / Izin
-                  '#f43f5e'  // Merah / Alpa
+                  '#3cddc7',
+                  '#f59e0b',
+                  '#38bdf8',
+                  '#c084fc',
+                  '#fb7185'
                 ],
                 borderWidth: 0,
                 hoverOffset: 6
@@ -259,15 +290,23 @@
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              cutout: '50%',
+              cutout: '55%',
               plugins: {
                 legend: {
                   position: 'bottom',
                   labels: {
                     color: '#cbd5e1',
                     font: { size: 10 },
-                    padding: 10
+                    padding: 12,
+                    usePointStyle: true,
+                    pointStyleWidth: 8
                   }
+                },
+                tooltip: {
+                  backgroundColor: '#1e293b',
+                  titleColor: '#f8fafc',
+                  bodyColor: '#f8fafc',
+                  cornerRadius: 8
                 }
               }
             }
@@ -276,11 +315,12 @@
         .catch(err => console.error("Gagal memuat grafik admin:", err));
     }
 
-    // Override / Tambahan fungsi load data agar grafik juga ikut ter-refresh saat tombol refresh ditekan
     const originalLoadDashboardData = window.loadDashboardData;
-    // (Jika dashboard.js mendefinisikan loadDashboardData, kita panggil loadAdminChart di dalamnya juga)
+    window.loadDashboardData = function() {
+      if (originalLoadDashboardData) originalLoadDashboardData();
+      loadAdminChart();
+    };
 
-    // Fungsi Filter Search Tabel Admin
     function filterAdminTabel() {
       const input = document.getElementById("searchAdminTabel");
       const filter = input.value.toLowerCase();
@@ -293,15 +333,22 @@
       }
     }
 
-  // Fungsi Simpan Absen Manual
     function simpanAbsenManual() {
-      const tanggal = document.getElementById("manualTanggal").value;
+      const rawTanggal = document.getElementById("manualTanggal").value;
+
+      let tanggal = rawTanggal;
+      if (rawTanggal.includes("/")) {
+        const parts = rawTanggal.split("/");
+        if (parts[0].length <= 2) {
+          tanggal = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+        }
+      }
+
       const selectSiswa = document.getElementById("manualNisn");
       const nisn = selectSiswa.value;
-      
-      // Ambil teks nama dari dropdown yang dipilih (misal: "NAMA SISWA (12345)")
+
       const selectedText = selectSiswa.options[selectSiswa.selectedIndex].text;
-      const nama = selectedText.split(" (")[0]; // Ambil bagian namanya saja
+      const nama = selectedText.split(" (")[0];
 
       const status = document.getElementById("manualStatus").value;
       const keterangan = document.getElementById("manualKeterangan").value;
@@ -315,7 +362,7 @@
         action: "absenManual",
         tanggal: tanggal,
         nisn: nisn,
-        nama: nama, // <-- Sekarang nama ikut dikirim ke backend
+        nama: nama,
         status: status,
         keterangan: keterangan
       };
@@ -330,7 +377,7 @@
         alert(res.message || "Absen manual berhasil disimpan!");
         document.getElementById("manualKeterangan").value = "";
         loadDashboardData();
-        loadAdminChart(); // Refresh grafik juga
+        loadAdminChart();
       })
       .catch(err => {
         console.error("Error:", err);
@@ -339,9 +386,21 @@
     }
 
     function exportCSV() {
-      const bulan = document.getElementById("pilihBulanCsv").value;
+      const bulan = document.getElementById("pilihBulan").value;
       window.location.href = `${API_URL}?action=exportRekapCSV&bulan=${bulan}`;
     }
   </script>
+
+  <!-- Floating Action Buttons (Mobile Only) -->
+  <div class="fixed bottom-6 right-6 z-50 sm:hidden flex flex-col gap-3">
+    <a href="scanner.html" class="flex flex-col items-center justify-center gap-1.5 bg-tertiary hover:bg-tertiary/85 text-on-tertiary font-bold p-4 rounded-[20px] shadow-xl transition-all duration-200 hover:scale-105 active:scale-95">
+      <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+      <span class="text-[11px] uppercase tracking-wider">Buka Scanner</span>
+    </a>
+    <button onclick="logout()" class="flex items-center justify-center gap-2 bg-surface-container-low/70 backdrop-blur-md border border-rose-500/30 text-rose-400 hover:bg-rose-500/10 font-semibold rounded-[20px] transition-all duration-200 py-3.5 px-4 text-[13px] active:scale-95">
+      <span class="material-symbols-outlined text-[22px]">logout</span>
+      <span>Logout</span>
+    </button>
+  </div>
 </body>
 </html>

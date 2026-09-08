@@ -4,39 +4,230 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - E-Absensi</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
-    <div class="text-center space-y-2">
-      <span class="text-4xl">🔐</span>
-      <h2 class="text-2xl font-bold text-white">Portal E-Absensi</h2>
-      <p class="text-xs text-slate-400">Masukkan akun Admin atau NISN Siswa kamu</p>
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS with Obsidian Aurora config -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#818cf8",
+            "on-primary": "#131e8c",
+            "primary-container": "#bdc2ff",
+            "on-primary-container": "#101b8a",
+            "on-primary-fixed": "#000767",
+            "on-primary-fixed-variant": "#2f3aa3",
+            "secondary": "#c7d2fe",
+            "on-secondary": "#242f52",
+            "secondary-container": "#3a456a",
+            "on-secondary-container": "#a9b4de",
+            "on-secondary-fixed": "#0d1a3c",
+            "on-secondary-fixed-variant": "#3a456a",
+            "tertiary": "#3cddc7",
+            "on-tertiary": "#003731",
+            "tertiary-container": "#00a896",
+            "on-tertiary-container": "#00352e",
+            "on-tertiary-fixed": "#00201c",
+            "on-tertiary-fixed-variant": "#005047",
+            "background": "#0b1326",
+            "on-background": "#dae2fd",
+            "surface": "#1e293b",
+            "on-surface": "#dae2fd",
+            "on-surface-variant": "#c6c5d5",
+            "surface-variant": "#2d3449",
+            "surface-container": "#171f33",
+            "surface-container-low": "#131b2e",
+            "surface-container-lowest": "#060e20",
+            "surface-container-high": "#222a3d",
+            "surface-container-highest": "#2d3449",
+            "surface-dim": "#0b1326",
+            "surface-bright": "#31394d",
+            "surface-tint": "#bdc2ff",
+            "surface-overlay": "#334155",
+            "outline": "#908f9e",
+            "outline-variant": "#454653",
+            "border-glow": "rgba(129, 140, 248, 0.15)",
+             "error": "#fb7185",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "error-vibrant": "#fb7185"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "body": ["Manrope", "sans-serif"],
+            "headline": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"],
+            "headline-lg": ["Manrope", "sans-serif"],
+            "headline-md": ["Manrope", "sans-serif"],
+            "display-xl": ["Manrope", "sans-serif"],
+            "display-xl-mobile": ["Manrope", "sans-serif"],
+            "label-md": ["Manrope", "sans-serif"],
+            "label-sm": ["Manrope", "sans-serif"],
+            "body-lg": ["Manrope", "sans-serif"],
+            "body-md": ["Manrope", "sans-serif"]
+          },
+          fontSize: {
+            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "label-md": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "700", letterSpacing: "0.05em" }],
+            "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+            "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
+            "display-xl": ["64px", { lineHeight: "72px", fontWeight: "800", letterSpacing: "-0.02em" }],
+            "display-xl-mobile": ["40px", { lineHeight: "48px", fontWeight: "800", letterSpacing: "-0.02em" }]
+          },
+          spacing: {
+            "sm": "0.25rem",
+            "DEFAULT": "0.5rem",
+            "md": "0.75rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px",
+            "margin-mobile": "20px",
+            "margin-desktop": "64px",
+            "unit": "8px",
+            "gutter": "24px",
+            "container-max": "1280px",
+            "section-gap": "120px"
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0b1326 0%, #060e20 100%);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="flex justify-center p-margin-mobile md:p-margin-desktop text-on-surface items-start">
+
+  <main class="w-full max-w-[480px] mt-8">
+
+    <!-- Brand / Logo Area -->
+    <div class="text-center mb-10">
+      <div class="flex justify-center mb-6">
+        <img src="logo.jpeg" alt="E-Absensi Logo" class="w-20 h-20 rounded-xl shadow-lg">
+      </div>
+      <h1 class="font-display-xl-mobile text-display-xl-mobile md:font-display-xl md:text-display-xl text-primary mb-2">E-Absensi</h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant">Sistem Kehadiran Terpadu</p>
     </div>
 
-    <form onsubmit="handleLogin(event)" class="space-y-4">
-      <div>
-        <label class="block text-xs font-medium text-slate-300 mb-1">Username / NISN</label>
-        <input type="text" id="username" required placeholder="Contoh: fanka / 12345678" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-      </div>
+    <!-- Login Card -->
+    <div class="glass-panel rounded-[24px] ambient-shadow p-8 md:p-12 border-glow">
+      <form onsubmit="handleLogin(event)" class="space-y-6">
 
-      <div>
-        <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
-        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-        <span class="text-[10px] text-slate-500 mt-1 block">*Untuk Siswa, password default menggunakan NISN.</span>
-      </div>
+        <!-- Tab Switch (Mahasiswa / Administrator) -->
+        <div class="flex gap-2 p-1 bg-surface-container-low rounded-lg mb-6">
+          <button type="button" id="tab-mahasiswa" onclick="switchTab('mahasiswa')" class="flex-1 py-2 rounded-md text-label-sm bg-secondary text-on-secondary transition-all">SISWA</button>
+          <button type="button" id="tab-administrator" onclick="switchTab('administrator')" class="flex-1 py-2 rounded-md text-label-sm text-on-surface-variant hover:text-primary transition-all">Administrator</button>
+        </div>
 
-      <div id="error-msg" class="hidden bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs p-3 rounded-xl text-center"></div>
+        <!-- Error Message (JS-controlled: id="error-msg", class="hidden") -->
+        <div id="error-msg" class="hidden mb-4 p-3 rounded-lg bg-error-container text-on-error-container text-label-sm flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px]">error</span>
+          <span id="error-text"></span>
+        </div>
 
-      <button type="submit" id="btn-submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition">
-        Masuk Sistem
-      </button>
-    </form>
-  </div>
+        <!-- Username / ID Field (JS: id="username") -->
+        <div>
+          <label id="user-label" class="block font-label-md text-label-md text-on-surface-variant mb-2" for="username">NISN</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-4 text-outline pointer-events-none">person</span>
+            <input class="w-full pl-12 pr-4 py-3 rounded-lg border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-md text-body-md text-on-surface placeholder:text-outline-variant" id="username" name="username" placeholder="Masukkan NISN Anda" required type="text">
+          </div>
+        </div>
 
+        <!-- Password Field (JS: id="password") -->ew
+        <div>
+          <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="password">Kata Sandi</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-4 text-outline pointer-events-none">lock</span>
+            <input type="password" id="password" name="password" required placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" class="w-full pl-12 pr-12 py-3 rounded-lg border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-md text-body-md text-on-surface placeholder:text-outline-variant">
+            <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center pr-4 text-outline hover:text-primary transition-colors focus:outline-none">
+              <span class="material-symbols-outlined" id="password-toggle-icon">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hint -->
+        <span class="text-[10px] text-outline block">*Untuk Siswa, password default menggunakan NISN.</span>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="flex items-center justify-between mt-4">
+          <div class="flex items-center">
+            <input class="w-4 h-4 text-primary bg-surface-container-lowest border-surface-variant rounded focus:ring-primary focus:ring-2" id="remember" name="remember" type="checkbox">
+            <label class="ml-2 font-label-sm text-label-sm text-on-surface-variant cursor-pointer" for="remember">Ingat saya</label>
+          </div>
+          <a class="font-label-sm text-label-sm text-primary hover:underline transition-colors" href="#">Lupa sandi?</a>
+        </div>
+
+        <!-- Submit Button (JS: id="btn-submit") -->
+        <button type="submit" id="btn-submit" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.01] active:scale-95 mt-8 flex items-center justify-center gap-2 group">
+          <span>Masuk ke Portal</span>
+          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Footer / Support -->
+    <div class="text-center mt-8">
+      <p class="font-label-sm text-label-sm text-outline">
+        Butuh bantuan teknis? <a class="text-primary hover:underline transition-colors" href="#">Hubungi Administrator</a>
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzUNayLthLLRwfms4CQHTqTKj3lKhyrhWwb7mOIbMHEIM4HkC0jbwVgy-MYJaV1WxNXcQ/exec";
+
+    let currentRole = "mahasiswa";
+
+    function switchTab(role) {
+      currentRole = role;
+
+      const btnMhs = document.getElementById("tab-mahasiswa");
+      const btnAdm = document.getElementById("tab-administrator");
+      const label = document.getElementById("user-label");
+      const input = document.getElementById("username");
+
+      if (role === "mahasiswa") {
+        btnMhs.classList.remove("text-on-surface-variant", "hover:text-primary");
+        btnMhs.classList.add("bg-secondary", "text-on-secondary");
+        btnAdm.classList.remove("bg-secondary", "text-on-secondary");
+        btnAdm.classList.add("text-on-surface-variant", "hover:text-primary");
+        label.textContent = "NISN";
+        input.placeholder = "Masukkan NISN Anda";
+      } else {
+        btnMhs.classList.remove("bg-secondary", "text-on-secondary");
+        btnMhs.classList.add("text-on-surface-variant", "hover:text-primary");
+        btnAdm.classList.remove("text-on-surface-variant", "hover:text-primary");
+        btnAdm.classList.add("bg-secondary", "text-on-secondary");
+        label.textContent = "Username";
+        input.placeholder = "Masukkan Username";
+      }
+
+      /* Clear error on tab switch */
+      document.getElementById("error-text").innerText = "";
+      document.getElementById("error-msg").classList.add("hidden");
+    }
 
     function handleLogin(e) {
       e.preventDefault();
@@ -56,7 +247,7 @@
       })
       .then(res => res.json())
       .then(data => {
-        btn.innerText = "Masuk Sistem";
+        btn.innerText = "Masuk ke Portal";
         btn.disabled = false;
 
         if (data.status === "success") {
@@ -72,16 +263,28 @@
             window.location.href = "siswa.html";
           }
         } else {
-          errorMsg.innerText = data.message;
+          document.getElementById("error-text").innerText = data.message;
           errorMsg.classList.remove("hidden");
         }
       })
       .catch(err => {
-        btn.innerText = "Masuk Sistem";
+        btn.innerText = "Masuk ke Portal";
         btn.disabled = false;
-        errorMsg.innerText = "Gagal terhubung ke server!";
+        document.getElementById("error-text").innerText = "Gagal terhubung ke server!";
         errorMsg.classList.remove("hidden");
       });
+    }
+
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      const icon = document.getElementById("password-toggle-icon");
+      if (pwd.type === "password") {
+        pwd.type = "text";
+        icon.textContent = "visibility_off";
+      } else {
+        pwd.type = "password";
+        icon.textContent = "visibility";
+      }
     }
   </script>
 </body>

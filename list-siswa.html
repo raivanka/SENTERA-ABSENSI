@@ -1,52 +1,177 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rekap Kehadiran 35 Siswa - Senexus</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-6 font-sans">
+  <title>Rekap Kehadiran Siswa - Senexus</title>
 
-  <div class="max-w-5xl mx-auto space-y-6">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
-    <!-- HEADER PAGE -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 border border-slate-700 p-5 rounded-2xl shadow-xl gap-4">
-      <div>
-        <h1 class="text-xl font-bold text-amber-400 flex items-center gap-2">
-          <span>👥</span> Rekap Kehadiran List 35 Siswa
-        </h1>
-        <p class="text-xs text-slate-400 mt-1">Daftar Paten 35 Siswa | Struktur: Tahun ➔ Bulan ➔ Minggu ➔ Hari</p>
-      </div>
-      <a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
-        ⬅ Kembali ke Dashboard
-      </a>
-    </div>
-
-    <!-- SEARCH BAR -->
-    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl shadow-md">
-      <div class="relative">
-        <input type="text" id="searchSiswaList" 
-               class="w-full bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-amber-400" 
-               placeholder="Cari Nama Siswa..." onkeyup="searchCardSiswa()">
-        <span class="absolute left-3 top-3.5 text-slate-400">🔍</span>
-      </div>
-    </div>
-
-    <!-- CONTAINER LIST SISWA -->
-    <div id="containerListSiswa" class="space-y-4">
-      <div class="text-center py-12 text-slate-500 bg-slate-800 border border-slate-700 rounded-2xl">
-        ⏳ Memuat 35 Data Siswa & Memetakan Presensi...
-      </div>
-    </div>
-
-  </div>
-
-  <!-- LOAD VARIABLE API_URL DARI DASHBOARD.JS -->
-  <script src="dashboard.js"></script>
-  
   <script>
-    // 1. DAFTAR MASTER 35 SISWA PATEN (URUT SAMA SEPERTI DI DATA_SISWA)
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "border-glow": "rgba(129, 140, 248, 0.15)",
+            "tertiary-fixed": "#3cddc7",
+            "surface-tint": "#bdc2ff",
+            "error-vibrant": "#fb7185",
+            "on-secondary-fixed-variant": "#3a456a",
+            "secondary-fixed-dim": "#bac5f0",
+            "on-tertiary": "#003731",
+            "inverse-primary": "#4953bc",
+            "on-secondary-container": "#a9b4de",
+            "on-surface-variant": "#c6c5d5",
+            "surface-container-lowest": "#060e20",
+            "surface-container-highest": "#2d3449",
+            "tertiary": "#3cddc7",
+            "on-error": "#690005",
+            "surface-container-high": "#222a3d",
+            "tertiary-fixed-dim": "#3cddc7",
+            "on-error-container": "#ffdad6",
+            "on-primary": "#131e8c",
+            "on-tertiary-fixed": "#00201c",
+            "on-surface": "#dae2fd",
+            "surface-card": "#1e293b",
+            "tertiary-container": "#00a896",
+            "on-tertiary-fixed-variant": "#005047",
+            "surface-bright": "#31394d",
+            "on-tertiary-container": "#00352e",
+            "primary-container": "#818cf8",
+            "surface-variant": "#2d3449",
+            "on-primary-fixed": "#000767",
+            "surface-overlay": "#334155",
+            "background": "#0b1326",
+            "surface-container": "#171f33",
+            "error": "#ffb4ab",
+            "secondary-container": "#3a456a",
+            "on-secondary-fixed": "#0d1a3c",
+            "surface-container-low": "#131b2e",
+            "inverse-surface": "#dae2fd",
+            "surface": "#0b1326",
+            "primary-fixed": "#e0e0ff",
+            "primary-fixed-dim": "#bdc2ff",
+            "outline-variant": "#454653",
+            "error-container": "#93000a",
+            "secondary-fixed": "#dbe1ff",
+            "on-primary-fixed-variant": "#2f3aa3",
+            "secondary": "#bac5f0",
+            "primary": "#bdc2ff",
+            "surface-dim": "#0b1326",
+            "on-secondary": "#242f52",
+            "on-primary-container": "#101b8a",
+            "inverse-on-surface": "#283044",
+            "on-background": "#dae2fd",
+            "outline": "#908f9e"
+          },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          spacing: { "margin-mobile": "20px", "margin-desktop": "64px", unit: "8px", "section-gap": "120px", gutter: "24px", "container-max": "1280px" },
+          fontFamily: { "label-md": ["Manrope"], "headline-md": ["Manrope"], "label-sm": ["Manrope"], "headline-lg": ["Manrope"], "body-lg": ["Manrope"], "body-md": ["Manrope"] },
+          fontSize: {
+            "label-md": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+            "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+            "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }],
+            "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .accordion-item.active .accordion-content {
+      max-height: 1200px;
+    }
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+
+  <!-- Background decorative circle -->
+  <div class="absolute top-[-200px] right-[-100px] w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] bg-primary-fixed opacity-10 rounded-full blur-[80px] sm:blur-[100px] -z-10 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-[-200px] w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-secondary-fixed opacity-10 rounded-full blur-[80px] sm:blur-[120px] -z-10 pointer-events-none"></div>
+
+  <!-- TopNavBar -->
+  <nav class="bg-surface/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm shadow-[0_10px_40px_rgba(67,67,213,0.05)] transition-all duration-300">
+    <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto h-20">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpeg" alt="E-Absensi Logo" class="h-12 w-auto object-contain">
+        <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">E-Absensi Sentera</span>
+      </div>
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Dasbor</a>
+        <a href="dashboard.html" class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Dashboard Admin</a>
+        <a href="list-siswa.html" class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1">Laporan</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="index.html" onclick="localStorage.clear()" class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-1" title="Keluar">
+          <span class="material-symbols-outlined" data-icon="logout">logout</span>
+          <span class="hidden lg:block text-label-md">Keluar</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+
+    <!-- Header & Search -->
+    <div class="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <a href="dashboard.html" class="w-10 h-10 rounded-lg bg-surface-card border border-surface-bright flex items-center justify-center text-on-surface hover:text-primary hover:border-primary-container transition-colors group">
+          <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="font-headline-lg text-headline-lg text-on-surface">Rekap Kehadiran Siswa</h1>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-container/20 text-primary border border-primary/30 ml-3">
+            <span class="material-symbols-outlined text-[14px] mr-1">admin_panel_settings</span>
+            Admin View
+          </span>
+          <p class="font-body-md text-body-md text-on-surface-variant mt-1">Kelas XII PPLG &bull; 35 Siswa</p>
+        </div>
+      </div>
+      <div class="relative w-full md:w-96">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <span class="material-symbols-outlined text-outline">search</span>
+        </div>
+        <input id="searchInput" type="text" onkeyup="searchCardSiswa()"
+               class="block w-full pl-10 pr-3 py-3 border border-surface-bright rounded-xl leading-5 bg-[#020617] text-on-surface placeholder-outline focus:outline-none focus:ring-1 focus:ring-primary-container focus:border-primary-container font-body-md transition-all"
+               placeholder="Cari nama siswa...">
+      </div>
+    </div>
+
+    <!-- Student List Grid -->
+    <div id="studentList" class="grid grid-cols-1 gap-4">
+      <div class="text-center py-12 text-on-surface-variant bg-surface-card border border-surface-bright rounded-xl">
+        <span class="material-symbols-outlined text-4xl mb-2 opacity-30">hourglass_empty</span>
+        <p>Memuat data siswa...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Load API_URL -->
+  <script src="config.js"></script>
+
+  <script>
     const masterSiswa35 = [
       { nama: "ADILLA PANCA MITANO" },
       { nama: "AGUNG LUTFIANA" },
@@ -86,12 +211,11 @@
     ];
 
     const namaBulanList = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    const hariMap = { 1: "Senin", 2: "Selasa", 3: "Rabu", 4: "Kamis", 5: "Jumat" };
+    const hariMap = { 1: "Sen", 2: "Sel", 3: "Rab", 4: "Kam", 5: "Jum" };
 
     async function initListSiswa() {
       try {
-        // Panggil action getDetailRekap yang terbukti SUDAH ADA di dashboard.js kamu
-        const res = await fetch(`${API_URL}?action=getDetailRekap`);
+        const res = await fetch(API_URL + "?action=getDetailRekap");
         const rekapAbsen = await res.json();
         renderUI(masterSiswa35, Array.isArray(rekapAbsen) ? rekapAbsen : []);
       } catch (err) {
@@ -100,167 +224,152 @@
       }
     }
 
+    function getBadgeClass(status) {
+      switch (status) {
+        case "Hadir": return "bg-tertiary-container/20 text-tertiary-fixed border-tertiary/30";
+        case "Terlambat": return "bg-error-container/20 text-error border-error/30";
+        case "Sakit": return "bg-secondary-container/20 text-secondary border-secondary/30";
+        case "Izin": return "bg-surface-variant text-on-surface-variant border-surface-bright";
+        case "Alpa": return "bg-error-vibrant/20 text-error-vibrant border-error-vibrant/30";
+        default: return "bg-surface-variant text-on-surface-variant border-surface-bright";
+      }
+    }
+
+    function getBadgeLabel(status) {
+      switch (status) {
+        case "Hadir": return "H";
+        case "Terlambat": return "T";
+        case "Sakit": return "S";
+        case "Izin": return "I";
+        case "Alpa": return "A";
+        default: return "-";
+      }
+    }
+
     function renderUI(masterSiswa, rekapAbsen) {
-      const container = document.getElementById('containerListSiswa');
+      var container = document.getElementById("studentList");
       container.innerHTML = "";
 
-      // Hitung Total Hari Efektif Sekolah yang sudah tercatat
-      const tglUnik = [...new Set(rekapAbsen.map(r => String(r.tanggal).split('T')[0]))].filter(Boolean);
-      const totalHariEfektif = tglUnik.length > 0 ? tglUnik.length : 1;
+      var tglUnik = [];
+      var tglSet = {};
+      rekapAbsen.forEach(function (r) {
+        var t = String(r.tanggal || "").split("T")[0];
+        if (t && !tglSet[t]) { tglSet[t] = true; tglUnik.push(t); }
+      });
+      var totalHariEfektif = tglUnik.length > 0 ? tglUnik.length : 1;
 
-      // Map Absensi Berdasarkan NAMA SISWA
-      const dbRekap = {};
-
-      rekapAbsen.forEach(item => {
+      var dbRekap = {};
+      rekapAbsen.forEach(function (item) {
         if (!item.tanggal || !item.nama) return;
-
-        const cleanTgl = String(item.tanggal).split('T')[0].trim();
-        let parts = cleanTgl.includes('-') ? cleanTgl.split('-') : cleanTgl.split('/');
-        
-        let year, monthIdx, dayNum;
-        if (parts[0].length === 4) { // YYYY-MM-DD
-          year = parseInt(parts[0]);
-          monthIdx = parseInt(parts[1]) - 1;
-          dayNum = parseInt(parts[2]);
-        } else { // DD/MM/YYYY
-          dayNum = parseInt(parts[0]);
-          monthIdx = parseInt(parts[1]) - 1;
-          year = parseInt(parts[2]);
+        var cleanTgl = String(item.tanggal).split("T")[0].trim();
+        var parts = cleanTgl.includes("-") ? cleanTgl.split("-") : cleanTgl.split("/");
+        var year, monthIdx, dayNum;
+        if (parts[0].length === 4) {
+          year = parseInt(parts[0]); monthIdx = parseInt(parts[1]) - 1; dayNum = parseInt(parts[2]);
+        } else {
+          dayNum = parseInt(parts[0]); monthIdx = parseInt(parts[1]) - 1; year = parseInt(parts[2]);
         }
-
-        const d = new Date(year, monthIdx, dayNum);
+        var d = new Date(year, monthIdx, dayNum);
         if (isNaN(d.getTime())) return;
-
-        const namaKey = String(item.nama).trim().toUpperCase();
-        const dayOfWeek = d.getDay();
-        const mingguKe = Math.min(Math.ceil(dayNum / 7), 4);
-
+        var namaKey = String(item.nama).trim().toUpperCase();
+        var dayOfWeek = d.getDay();
+        var mingguKe = Math.min(Math.ceil(dayNum / 7), 4);
         if (!dbRekap[namaKey]) dbRekap[namaKey] = {};
         if (!dbRekap[namaKey][year]) dbRekap[namaKey][year] = {};
         if (!dbRekap[namaKey][year][monthIdx]) dbRekap[namaKey][year][monthIdx] = {};
         if (!dbRekap[namaKey][year][monthIdx][mingguKe]) dbRekap[namaKey][year][monthIdx][mingguKe] = {};
-
         if (dayOfWeek >= 1 && dayOfWeek <= 5) {
           dbRekap[namaKey][year][monthIdx][mingguKe][dayOfWeek] = item.status || "Hadir";
         }
       });
 
-      const currentYear = 2026;
+      var currentYear = new Date().getFullYear();
+      var currentMonth = new Date().getMonth();
 
-      masterSiswa.forEach((siswa, index) => {
-        const namaKey = String(siswa.nama).trim().toUpperCase();
-        const riwayat = rekapAbsen.filter(r => String(r.nama).trim().toUpperCase() === namaKey);
-        const totalHadir = riwayat.filter(r => r.status === 'Hadir' || r.status === 'Terlambat').length;
-        
-        const persen = Math.round((totalHadir / totalHariEfektif) * 100);
+      masterSiswa.forEach(function (siswa, index) {
+        var namaKey = String(siswa.nama).trim().toUpperCase();
+        var riwayat = rekapAbsen.filter(function (r) { return String(r.nama).trim().toUpperCase() === namaKey; });
+        var totalHadir = riwayat.filter(function (r) { return r.status === "Hadir" || r.status === "Terlambat"; }).length;
+        var persen = Math.round((totalHadir / totalHariEfektif) * 100);
+        var initial = siswa.nama.charAt(0);
 
-        let html = `
-          <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg item-siswa">
-            <div class="flex justify-between items-center cursor-pointer select-none" onclick="toggleAcc('acc-siswa-${index}')">
-              <div>
-                <h3 class="font-bold text-base text-white nama-siswa">${index + 1}. ${siswa.nama}</h3>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="${persen >= 75 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'} text-xs px-2.5 py-1 rounded-lg font-bold border">
-                  ${persen}% Kehadiran
-                </span>
-                <span id="icon-acc-siswa-${index}" class="text-slate-400 text-xs">▼</span>
-              </div>
-            </div>
+        var weekHTML = "";
+        for (var w = 1; w <= 4; w++) {
+          weekHTML += '<div class="flex flex-col gap-2"><div class="text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">Minggu ' + w + '</div><div class="grid grid-cols-5 gap-1">';
+          [1, 2, 3, 4, 5].forEach(function (dayNum) {
+            var statusText = "-";
+            if (dbRekap[namaKey] && dbRekap[namaKey][currentYear] && dbRekap[namaKey][currentYear][currentMonth] && dbRekap[namaKey][currentYear][currentMonth][w] && dbRekap[namaKey][currentYear][currentMonth][w][dayNum]) {
+              statusText = dbRekap[namaKey][currentYear][currentMonth][w][dayNum];
+            }
+            weekHTML += '<div class="px-2 py-1 rounded text-xs font-semibold border ' + getBadgeClass(statusText) + ' text-center flex items-center justify-center">' + getBadgeLabel(statusText) + '</div>';
+          });
+          weekHTML += "</div></div>";
+        }
 
-            <div id="acc-siswa-${index}" class="hidden mt-4 pt-4 border-t border-slate-700/60 space-y-3">
-              <div class="bg-slate-900 border border-slate-700/80 rounded-xl p-3">
-                <div class="font-bold text-xs text-amber-400 flex justify-between items-center cursor-pointer select-none" onclick="toggleAcc('acc-tahun-${index}')">
-                  <span>📅 Tahun ${currentYear}</span>
-                  <span id="icon-acc-tahun-${index}">▼</span>
-                </div>
-
-                <div id="acc-tahun-${index}" class="hidden mt-3 space-y-2">
-        `;
-
-        namaBulanList.forEach((bulan, mIdx) => {
-          html += `
-            <div class="bg-slate-800 border border-slate-700/50 rounded-lg p-2.5">
-              <div class="text-xs font-semibold text-blue-400 flex justify-between items-center cursor-pointer select-none" onclick="toggleAcc('acc-bln-${index}-${mIdx}')">
-                <span>📆 Bulan ${bulan}</span>
-                <span id="icon-acc-bln-${index}-${mIdx}">▼</span>
-              </div>
-
-              <div id="acc-bln-${index}-${mIdx}" class="hidden mt-2 pt-2 border-t border-slate-700/40 space-y-3">
-          `;
-
-          for (let w = 1; w <= 4; w++) {
-            html += `
-              <div class="bg-slate-900/70 p-2.5 rounded-lg border border-slate-700/30">
-                <div class="text-[11px] font-bold text-amber-300 mb-2">🗓️ Minggu ke-${w}</div>
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-            `;
-
-            [1, 2, 3, 4, 5].forEach(dayNum => {
-              const hariNama = hariMap[dayNum];
-              let statusText = "-";
-              let badgeStyle = "text-slate-500 bg-slate-800/80 border-slate-700/40";
-
-              if (dbRekap[namaKey] && 
-                  dbRekap[namaKey][currentYear] && 
-                  dbRekap[namaKey][currentYear][mIdx] && 
-                  dbRekap[namaKey][currentYear][mIdx][w] && 
-                  dbRekap[namaKey][currentYear][mIdx][w][dayNum]) {
-                
-                statusText = dbRekap[namaKey][currentYear][mIdx][w][dayNum];
-
-                if (statusText === "Hadir") badgeStyle = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30 font-bold";
-                else if (statusText === "Terlambat") badgeStyle = "text-amber-400 bg-amber-500/10 border-amber-500/30 font-bold";
-                else if (statusText === "Sakit") badgeStyle = "text-blue-400 bg-blue-500/10 border-blue-500/30 font-bold";
-                else if (statusText === "Izin") badgeStyle = "text-purple-400 bg-purple-500/10 border-purple-500/30 font-bold";
-                else if (statusText === "Alpa") badgeStyle = "text-rose-400 bg-rose-500/10 border-rose-500/30 font-bold";
-              }
-
-              html += `
-                <div class="p-2 rounded-lg text-center border ${badgeStyle}">
-                  <span class="block text-[10px] opacity-75">${hariNama}</span>
-                  <span class="text-[11px] mt-0.5 block">${statusText}</span>
-                </div>
-              `;
-            });
-
-            html += `</div></div>`;
-          }
-
-          html += `</div></div>`;
+        var monthOptions = "";
+        namaBulanList.forEach(function (b, i) {
+          monthOptions += '<option value="' + i + '"' + (i === currentMonth ? " selected" : "") + ">" + b + "</option>";
         });
 
-        html += `
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
+        var html = '<div class="accordion-item item-siswa bg-surface-card rounded-xl border border-border-glow hover:border-primary-container transition-colors duration-300">' +
+          '<button class="w-full px-6 py-5 flex items-center justify-between focus:outline-none" onclick="this.parentElement.classList.toggle(\'active\')">' +
+            '<div class="flex items-center gap-4">' +
+              '<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-sm">' + initial + '</div>' +
+              '<div class="text-left">' +
+                '<h3 class="font-label-md text-label-md text-on-surface nama-siswa">' + siswa.nama + '</h3>' +
+                '<p class="text-xs text-on-surface-variant mt-0.5">Siswa #' + (index + 1) + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-6">' +
+              '<div class="hidden md:flex flex-col items-end">' +
+                '<span class="font-label-sm text-label-sm ' + (persen >= 75 ? "text-tertiary" : "text-error") + '">' + persen + '% Kehadiran</span>' +
+                '<div class="w-24 h-1.5 bg-surface-variant rounded-full mt-1 overflow-hidden">' +
+                  '<div class="h-full ' + (persen >= 75 ? "bg-tertiary" : "bg-error") + '" style="width:' + persen + '%"></div>' +
+                '</div>' +
+              '</div>' +
+              '<span class="material-symbols-outlined text-outline-variant accordion-icon transition-transform duration-300">expand_more</span>' +
+            '</div>' +
+          '</button>' +
+          '<div class="accordion-content border-t border-surface-bright/50">' +
+            '<div class="p-6">' +
+              '<div class="flex flex-col md:flex-row gap-8">' +
+                '<div class="w-full md:w-48 flex-shrink-0 flex flex-col gap-4">' +
+                  '<div class="glass-panel p-4 rounded-lg">' +
+                    '<div class="text-xs text-on-surface-variant uppercase tracking-wider mb-2">Tahun</div>' +
+                    '<select class="w-full bg-[#020617] border border-surface-bright rounded text-sm text-on-surface focus:ring-primary-container p-2"><option>' + currentYear + '</option></select>' +
+                  '</div>' +
+                  '<div class="glass-panel p-4 rounded-lg">' +
+                    '<div class="text-xs text-on-surface-variant uppercase tracking-wider mb-2">Bulan</div>' +
+                    '<select class="w-full bg-[#020617] border border-surface-bright rounded text-sm text-on-surface focus:ring-primary-container p-2">' + monthOptions + '</select>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">' + weekHTML + '</div>' +
+              '</div>' +
+              '<div class="mt-8 pt-4 border-t border-surface-bright/30 flex flex-wrap gap-4 text-xs font-label-sm">' +
+                '<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-tertiary"></span> Hadir</div>' +
+                '<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error"></span> Terlambat</div>' +
+                '<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary"></span> Sakit</div>' +
+                '<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-surface-variant border border-surface-bright"></span> Izin</div>' +
+                '<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error-vibrant"></span> Alpa</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
 
         container.innerHTML += html;
       });
     }
 
-    function toggleAcc(id) {
-      const el = document.getElementById(id);
-      const icon = document.getElementById('icon-' + id);
-      if (el) {
-        el.classList.toggle('hidden');
-        if (icon) icon.innerText = el.classList.contains('hidden') ? '▼' : '▲';
-      }
-    }
-
     function searchCardSiswa() {
-      const query = document.getElementById('searchSiswaList').value.toLowerCase();
-      const items = document.querySelectorAll('.item-siswa');
-
-      items.forEach(item => {
-        const nama = item.querySelector('.nama-siswa').textContent.toLowerCase();
+      var query = document.getElementById("searchInput").value.toLowerCase();
+      var items = document.querySelectorAll(".item-siswa");
+      items.forEach(function (item) {
+        var nama = item.querySelector(".nama-siswa").textContent.toLowerCase();
         item.style.display = nama.includes(query) ? "" : "none";
       });
     }
 
-    document.addEventListener('DOMContentLoaded', initListSiswa);
+    document.addEventListener("DOMContentLoaded", initListSiswa);
   </script>
 </body>
 </html>

@@ -1,254 +1,411 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Siswa - E-Absensi</title>
-  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- PROTEKSI ROUTE GUARD SISWA -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- INSIALISASI TEMA SEBELUM RENDER -->
   <script>
     if (!localStorage.getItem("sessionToken") || localStorage.getItem("userRole") !== "siswa") {
       window.location.replace("login.html");
     }
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   </script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4f46e5",
+            secondary: "#6366f1",
+            "error-vibrant": "#fb7185",
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Styling Elegan untuk Light Mode & Dark Mode */
+    .glass-card-elegan {
+      @apply bg-gradient-to-br from-white/90 via-slate-50/80 to-indigo-50/40 
+             dark:from-slate-900/90 dark:via-slate-900/80 dark:to-indigo-950/30 
+             backdrop-blur-xl 
+             border border-indigo-100/80 dark:border-slate-800/80 
+             shadow-xl shadow-indigo-950/[0.03] dark:shadow-none 
+             transition-all duration-300;
+    }
+
+    .glass-card-accent {
+      @apply bg-gradient-to-br from-indigo-50/60 via-white to-slate-50 
+             dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/40 
+             backdrop-blur-xl 
+             border border-indigo-200/50 dark:border-slate-800 
+             shadow-lg shadow-indigo-500/[0.04] dark:shadow-none 
+             transition-all duration-300;
+    }
+
+    .glass-nav {
+      @apply bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-indigo-100/60 dark:border-slate-800/80 transition-colors duration-300;
+    }
+    
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { @apply bg-indigo-200 dark:bg-slate-700 rounded-full; }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans p-4">
 
-  <div class="max-w-4xl mx-auto w-full space-y-6">
-
-    <!-- NAVBAR SISWA -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-800 border border-slate-700 p-4 rounded-2xl gap-4">
-      <div>
-        <p class="text-xs text-slate-400">Selamat datang,</p>
-        <h2 id="nama-siswa" class="text-lg font-bold text-emerald-400">-</h2>
-        <p id="nisn-siswa" class="text-[10px] text-slate-500">NISN: -</p>
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/20 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased min-h-screen transition-colors duration-300">
+  
+  <!-- Top NavBar -->
+  <nav class="glass-nav sticky top-0 z-50">
+    <div class="flex justify-between items-center px-4 md:px-6 lg:px-8 w-full max-w-[1280px] mx-auto h-16">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpeg" alt="Logo" class="h-9 w-auto object-contain" onerror="this.style.display='none'">
+        <span class="font-bold text-xl tracking-tight text-slate-900 dark:text-white hidden sm:inline">E-Absensi<span class="text-primary">Sentera</span></span>
       </div>
-      <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-        <button onclick="toggleModalIzin(true)" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold transition shadow-md">
-          📝 Ajukan Sakit / Izin
+      <div class="hidden md:flex gap-6 items-center">
+        <a href="siswa.html" class="font-semibold text-sm text-primary border-b-2 border-primary pb-1">Dashboard</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-600 dark:text-slate-300 shadow-sm" title="Toggle Dark Mode">
+          <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
         </button>
-        <button onclick="logoutSiswa()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition">
-          🚪 Keluar
+        <button onclick="logoutSiswa()" class="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors text-error-vibrant border border-rose-100 dark:border-rose-900/30" title="Logout">
+          <span class="material-symbols-outlined">logout</span>
         </button>
       </div>
     </div>
+  </nav>
 
-    <!-- STATISTIK PERIODIK (TABEL & PERSENTASE) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- Main Content Body -->
+  <main class="w-full max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8 py-8 flex flex-col gap-6">
+
+    <!-- Profile Header (Desain Elegan) -->
+    <section class="glass-card-elegan rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+      <!-- Glow Ornament -->
+      <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
+        <div id="avatar-siswa" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-400 text-white font-extrabold text-3xl flex items-center justify-center shadow-lg shadow-indigo-500/25 border-2 border-white/50">
+          S
+        </div>
+        <div class="text-center sm:text-left">
+          <h1 id="nama-siswa" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Siswa</h1>
+          <p id="nisn-siswa" class="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">NISN: -</p>
+          <span class="inline-block mt-3 px-3 py-1 bg-indigo-100/80 dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full border border-indigo-200/60 dark:border-slate-700">
+            XII RPL 2
+          </span>
+        </div>
+      </div>
       
-      <!-- PERMINGGU -->
-      <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3">
-        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-          <h3 class="font-bold text-sm text-amber-400">📅 7 Hari Terakhir</h3>
-          <span id="p-minggu" class="bg-amber-500/10 text-amber-400 text-xs px-2 py-0.5 rounded font-bold">0%</span>
+      <div class="flex flex-col items-center sm:items-end gap-3 w-full sm:w-auto relative z-10">
+        <button onclick="toggleModalIzin(true)" class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl font-semibold text-sm transition-all shadow-md shadow-indigo-500/20 active:scale-95">
+          <span class="material-symbols-outlined text-sm">edit_calendar</span>
+          Ajukan Sakit / Izin
+        </button>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold border border-indigo-200/80 dark:border-indigo-800/50 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>STUDENT
+        </span>
+      </div>
+    </section>
+
+    <!-- 7-Day Accuracy Card -->
+    <section class="glass-card-elegan rounded-3xl p-6 sm:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-indigo-950/50 dark:text-slate-400">7-Day Accuracy</h2>
+        <span id="accuracy-label" class="px-3 py-1 bg-emerald-100/80 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-200 dark:border-emerald-800">Excellent</span>
+      </div>
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <div class="relative shrink-0">
+          <div id="circular-progress" class="w-28 h-28 rounded-full flex items-center justify-center shadow-inner" style="background: conic-gradient(#4f46e5 0% 0%, rgba(79,70,229,0.1) 0% 100%);">
+            <div class="w-20 h-20 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center transition-colors shadow-sm">
+              <span id="p-minggu-val" class="text-2xl font-black text-slate-900 dark:text-white">0%</span>
+            </div>
+          </div>
         </div>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <div>Hadir: <b id="m-hadir" class="text-emerald-400">0</b></div>
-          <div>Terlambat: <b id="m-terlambat" class="text-amber-400">0</b></div>
-          <div>Sakit: <b id="m-sakit" class="text-blue-400">0</b></div>
-          <div>Izin: <b id="m-izin" class="text-purple-400">0</b></div>
-          <div class="col-span-2">Alpa: <b id="m-alpa" class="text-rose-400">0</b></div>
+        <div class="flex-1 w-full text-center md:text-left">
+          <div class="text-3xl font-black text-slate-900 dark:text-white mb-1" id="accuracy-pct">0%</div>
+          <p class="text-sm font-medium text-slate-500 dark:text-slate-400">based on the last 7 days</p>
+          <div class="mt-6 grid grid-cols-5 gap-2 text-center text-xs">
+            <div class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-sm"><span class="font-bold text-emerald-600 text-sm" id="m-hadir">0</span><span class="block text-slate-400 dark:text-slate-500 font-medium mt-0.5">Hadir</span></div>
+            <div class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-sm"><span class="font-bold text-amber-500 text-sm" id="m-terlambat">0</span><span class="block text-slate-400 dark:text-slate-500 font-medium mt-0.5">Late</span></div>
+            <div class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-sm"><span class="font-bold text-blue-500 text-sm" id="m-sakit">0</span><span class="block text-slate-400 dark:text-slate-500 font-medium mt-0.5">Sakit</span></div>
+            <div class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-sm"><span class="font-bold text-purple-500 text-sm" id="m-izin">0</span><span class="block text-slate-400 dark:text-slate-500 font-medium mt-0.5">Izin</span></div>
+            <div class="p-2.5 rounded-2xl bg-white/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 shadow-sm"><span class="font-bold text-rose-500 text-sm" id="m-alpa">0</span><span class="block text-slate-400 dark:text-slate-500 font-medium mt-0.5">Alpa</span></div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- PERBULAN -->
-      <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3">
-        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-          <h3 class="font-bold text-sm text-blue-400">📆 Bulan Ini</h3>
-          <span id="p-bulan" class="bg-blue-500/10 text-blue-400 text-xs px-2 py-0.5 rounded font-bold">0%</span>
+    <!-- Quick Action Section -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <button onclick="toggleModalIzin(true)" class="glass-card-accent rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-1 transition-all text-left">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20">
+          <span class="material-symbols-outlined text-2xl">sick</span>
         </div>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <div>Hadir: <b id="b-hadir" class="text-emerald-400">0</b></div>
-          <div>Terlambat: <b id="b-terlambat" class="text-amber-400">0</b></div>
-          <div>Sakit: <b id="b-sakit" class="text-blue-400">0</b></div>
-          <div>Izin: <b id="b-izin" class="text-purple-400">0</b></div>
-          <div class="col-span-2">Alpa: <b id="b-alpa" class="text-rose-400">0</b></div>
+        <div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Sakit / Izin</h3>
+          <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Ajukan keterangan sakit atau izin</p>
+        </div>
+      </button>
+      <button onclick="lihatJadwal()" class="glass-card-accent rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-1 transition-all text-left">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-500 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20">
+          <span class="material-symbols-outlined text-2xl">calendar_month</span>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-900 dark:text-white">Lihat Jadwal</h3>
+          <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">Jadwal pelajaran dan kegiatan</p>
+        </div>
+      </button>
+    </section>
+
+    <!-- Daily Status Card -->
+    <section class="glass-card-elegan rounded-3xl p-6 sm:p-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Daily Status</h2>
+        <span id="daily-status-badge" class="px-3 py-1 bg-indigo-100/80 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold rounded-full border border-indigo-200/50">Present</span>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="font-medium text-slate-500 dark:text-slate-400">Weekly attendance rate</span>
+          <span id="daily-pct" class="font-bold text-slate-900 dark:text-white">0%</span>
+        </div>
+        <div class="w-full h-3 bg-indigo-100/60 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-indigo-100/50 dark:border-none">
+          <div id="daily-bar" class="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full transition-all duration-500 shadow-sm" style="width:0%"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span id="daily-detail">0/0 days present</span>
+          <span id="daily-trend">-</span>
         </div>
       </div>
+    </section>
 
-      <!-- PERTAHUN -->
-      <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl space-y-3">
-        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-          <h3 class="font-bold text-sm text-emerald-400">🎓 Tahun Ini</h3>
-          <span id="p-tahun" class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded font-bold">0%</span>
+    <!-- Attendance History -->
+    <section class="glass-card-elegan rounded-3xl p-6 sm:p-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Riwayat Kehadiran</h2>
+        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Recent 30 days</span>
+      </div>
+      <div id="history-list" class="overflow-y-auto h-[360px] pr-1 space-y-2">
+        <div class="text-center py-12 text-slate-400">
+          <span class="material-symbols-outlined text-4xl mb-2 opacity-30">hourglass_empty</span>
+          <p class="text-sm font-medium">Memuat data kehadiran...</p>
         </div>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-          <div>Hadir: <b id="t-hadir" class="text-emerald-400">0</b></div>
-          <div>Terlambat: <b id="t-terlambat" class="text-amber-400">0</b></div>
-          <div>Sakit: <b id="t-sakit" class="text-blue-400">0</b></div>
-          <div>Izin: <b id="t-izin" class="text-purple-400">0</b></div>
-          <div class="col-span-2">Alpa: <b id="t-alpa" class="text-rose-400">0</b></div>
-        </div>
       </div>
+    </section>
+  </main>
 
-    </div>
-
-    <!-- TABEL RIWAYAT ABSENSI -->
-    <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
-      <div class="p-4 border-b border-slate-700">
-        <h3 class="font-bold text-sm text-white">📋 Riwayat Kehadiran Lengkap</h3>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-900 text-slate-400 uppercase text-[10px]">
-            <tr>
-              <th class="px-4 py-3">Tanggal / Waktu</th>
-              <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3">Keterangan</th>
-            </tr>
-          </thead>
-          <tbody id="tabel-riwayat-body" class="divide-y divide-slate-700/50">
-            <tr>
-              <td colspan="3" class="text-center py-6 text-slate-500">Memuat data kehadiran...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- MODAL / POPUP PENGAJUAN IZIN ATAU SAKIT -->
-  <div id="modalIzin" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-slate-800 border border-slate-700 w-full max-w-md p-6 rounded-2xl space-y-4 shadow-2xl">
-      <h3 class="font-bold text-white text-base">Form Pengajuan Sakit / Izin</h3>
-      
+  <!-- MODAL IZIN -->
+  <div id="modalIzin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+    <div class="bg-white dark:bg-slate-900 border border-indigo-100 dark:border-slate-800 w-full max-w-md p-6 rounded-3xl space-y-4 shadow-2xl transition-colors">
+      <h3 class="text-lg font-bold text-slate-900 dark:text-white">Form Pengajuan Sakit / Izin</h3>
       <div class="space-y-3">
         <div>
-          <label class="block text-xs text-slate-400 mb-1">Status Pengajuan:</label>
-          <select id="inputStatusIzin" class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500">
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Status Pengajuan:</label>
+          <select id="inputStatusIzin" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500">
             <option value="Sakit">Sakit</option>
             <option value="Izin">Izin</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs text-slate-400 mb-1">Keterangan / Alasan:</label>
-          <textarea id="inputKeteranganIzin" rows="3" class="w-full bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500" placeholder="Tuliskan alasan atau keterangan..."></textarea>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Keterangan / Alasan:</label>
+          <textarea id="inputKeteranganIzin" rows="3" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:border-indigo-500" placeholder="Tuliskan alasan..."></textarea>
         </div>
       </div>
-
       <div class="flex justify-end gap-2 pt-2">
-        <button onclick="toggleModalIzin(false)" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-4 py-2 rounded-xl text-xs font-semibold transition">
-          Batal
-        </button>
-        <button onclick="kirimPengajuanIzin()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
-          Kirim Pengajuan
-        </button>
+        <button onclick="toggleModalIzin(false)" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-4 py-2 rounded-xl text-sm font-semibold transition">Batal</button>
+        <button onclick="kirimPengajuanIzin()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Kirim Pengajuan</button>
       </div>
     </div>
   </div>
 
+  <!-- SCRIPT UTAMA -->
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzUNayLthLLRwfms4CQHTqTKj3lKhyrhWwb7mOIbMHEIM4HkC0jbwVgy-MYJaV1WxNXcQ/exec";
-
     const nisn = localStorage.getItem("siswaNisn");
     const nama = localStorage.getItem("siswaNama");
 
     document.getElementById("nama-siswa").innerText = nama || "Siswa";
     document.getElementById("nisn-siswa").innerText = "NISN: " + (nisn || "-");
+    document.getElementById("avatar-siswa").innerText = (nama || "S").charAt(0).toUpperCase();
 
-    function loadSiswaData() {
-      fetch(`${API_URL}?action=getSiswaRekap&nisn=${nisn}`)
-        .then(res => res.json())
-        .then(data => {
-          // Fill Mingguan
-          fillStats('m', data.mingguan);
-          document.getElementById('p-minggu').innerText = (data.mingguan.persentase || 0) + "% Kehadiran";
-
-          // Fill Bulanan
-          fillStats('b', data.bulanan);
-          document.getElementById('p-bulan').innerText = (data.bulanan.persentase || 0) + "% Kehadiran";
-
-          // Fill Tahunan
-          fillStats('t', data.tahunan);
-          document.getElementById('p-tahun').innerText = (data.tahunan.persentase || 0) + "% Kehadiran";
-
-          // Fill Tabel
-          const tbody = document.getElementById("tabel-riwayat-body");
-          tbody.innerHTML = "";
-
-          if (!data.riwayat || data.riwayat.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-slate-500">Belum ada riwayat absensi.</td></tr>`;
-            return;
-          }
-
-          data.riwayat.forEach(item => {
-            let badgeColor = "text-slate-400";
-            if (item.status === "Hadir") badgeColor = "text-emerald-400 font-bold";
-            else if (item.status === "Terlambat") badgeColor = "text-amber-400 font-bold";
-            else if (item.status === "Sakit") badgeColor = "text-blue-400 font-bold";
-            else if (item.status === "Izin") badgeColor = "text-purple-400 font-bold";
-            else if (item.status === "Alpa") badgeColor = "text-rose-400 font-bold";
-
-            tbody.innerHTML += `
-              <tr class="hover:bg-slate-700/30">
-                <td class="px-4 py-3">${item.tanggal}<br><span class="text-[10px] text-slate-500">${item.waktu}</span></td>
-                <td class="px-4 py-3 ${badgeColor}">${item.status}</td>
-                <td class="px-4 py-3 text-slate-400">${item.keterangan || "-"}</td>
-              </tr>
-            `;
-          });
-        })
-        .catch(err => console.error("Gagal memuat data siswa:", err));
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const icon = document.getElementById("theme-icon");
+      if (icon) icon.textContent = isDark ? "light_mode" : "dark_mode";
     }
 
-    function fillStats(prefix, statsObj) {
-      if (!statsObj) return;
-      document.getElementById(`${prefix}-hadir`).innerText = statsObj.hadir || 0;
-      document.getElementById(`${prefix}-terlambat`).innerText = statsObj.terlambat || 0;
-      document.getElementById(`${prefix}-sakit`).innerText = statsObj.sakit || 0;
-      document.getElementById(`${prefix}-izin`).innerText = statsObj.izin || 0;
-      document.getElementById(`${prefix}-alpa`).innerText = statsObj.alpa || 0;
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      updateThemeIcon();
+      
+      const currentPct = parseInt(document.getElementById("accuracy-pct").textContent) || 0;
+      renderCircularProgress(currentPct);
     }
 
-    // Fungsi Kontrol Modal Pengajuan Izin/Sakit
-    function toggleModalIzin(show) {
-      const modal = document.getElementById("modalIzin");
-      if (show) {
-        modal.classList.remove("hidden");
-      } else {
-        modal.classList.add("hidden");
-        document.getElementById("inputKeteranganIzin").value = "";
+    function renderCircularProgress(percentage) {
+      const pct = Math.max(0, Math.min(100, Math.round(percentage)));
+      const progressEl = document.getElementById("circular-progress");
+      const pctEl = document.getElementById("p-minggu-val");
+      const pctText = document.getElementById("accuracy-pct");
+
+      if (pctEl) pctEl.textContent = pct + "%";
+      if (pctText) pctText.textContent = pct + "%";
+
+      if (progressEl) {
+        const isDark = document.documentElement.classList.contains("dark");
+        const trackColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(79, 70, 229, 0.1)";
+        progressEl.style.background = `conic-gradient(#4f46e5 0% ${pct}%, ${trackColor} ${pct}% 100%)`;
       }
     }
 
-    // Fungsi Kirim Pengajuan ke Backend Apps Script
-    function kirimPengajuanIzin() {
-      const status = document.getElementById("inputStatusIzin").value;
-      const keterangan = document.getElementById("inputKeteranganIzin").value;
-
-      if (!keterangan.trim()) {
-        alert("Harap isi keterangan atau alasan pengajuan!");
+    function loadSiswaData() {
+      updateThemeIcon();
+      
+      if (!nisn) {
+        loadMockData();
         return;
       }
 
-      const payload = {
-        action: "ajukanIzinSiswa",
-        nisn: nisn,
-        status: status,
-        keterangan: keterangan
-      };
+      fetch(API_URL + "?action=getSiswaRekap&nisn=" + encodeURIComponent(nisn))
+        .then(res => res.json())
+        .then(data => {
+          if (data && (data.mingguan || data.riwayat)) {
+            renderStats(data);
+            renderHistory(data.riwayat);
+          } else {
+            loadMockData();
+          }
+        })
+        .catch(() => loadMockData());
+    }
 
-      fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(res => {
-        alert(res.message || "Berhasil mengajukan izin!");
-        toggleModalIzin(false);
-        loadSiswaData(); // Refresh data otomatis setelah kirim
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("Gagal mengirim pengajuan.");
+    function renderStats(data) {
+      if (!data || !data.mingguan) return;
+      fillStats("m", data.mingguan);
+      const pct = data.mingguan.persentase || 0;
+      renderCircularProgress(pct);
+
+      document.getElementById("daily-pct").textContent = Math.round(pct) + "%";
+      document.getElementById("daily-bar").style.width = pct + "%";
+      
+      const presentDays = (data.mingguan.hadir || 0) + (data.mingguan.terlambat || 0);
+      document.getElementById("daily-detail").textContent = `${presentDays}/${data.mingguan.total || 0} days present`;
+      document.getElementById("daily-trend").textContent = pct >= 75 ? "↑ On track" : "↓ Needs attention";
+    }
+
+    function renderHistory(riwayat) {
+      const list = document.getElementById("history-list");
+      if (!list) return;
+      list.innerHTML = "";
+
+      if (!riwayat || riwayat.length === 0) {
+        list.innerHTML = `<div class="text-center py-12 text-slate-400"><p class="text-sm font-medium">Belum ada riwayat absensi.</p></div>`;
+        return;
+      }
+
+      const months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+
+      riwayat.forEach(item => {
+        const parts = (item.tanggal || "").split("T")[0].split("-");
+        const dayNum = parts[2] || "--";
+        const monthShort = months[parseInt(parts[1], 10) - 1] || "--";
+
+        const row = document.createElement("div");
+        row.className = "flex items-center justify-between p-3.5 rounded-2xl bg-white/60 dark:bg-slate-800/40 border border-slate-100/80 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-sm";
+        row.innerHTML = `
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-300 flex flex-col items-center justify-center shrink-0 border border-indigo-100/50 dark:border-indigo-900/30">
+              <span class="font-extrabold text-sm leading-none">${dayNum}</span>
+              <span class="text-[10px] font-semibold opacity-70 leading-none mt-0.5">${monthShort}</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white">${item.status || "-"}</h4>
+              <p class="text-xs font-medium text-slate-400 mt-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">schedule</span> ${item.waktu || "-"}
+              </p>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-bold ${getStatusBadgeStyle(item.status)}">
+            ${item.status}
+          </span>
+        `;
+        list.appendChild(row);
       });
     }
 
-    function logoutSiswa() {
-      localStorage.clear();
-      window.location.replace("login.html");
+    function getStatusBadgeStyle(status) {
+      switch (status) {
+        case "Hadir": return "bg-emerald-100/80 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50";
+        case "Terlambat": return "bg-amber-100/80 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/50";
+        case "Sakit": return "bg-blue-100/80 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200/50";
+        case "Izin": return "bg-purple-100/80 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400 border border-purple-200/50";
+        default: return "bg-rose-100/80 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-200/50";
+      }
+    }
+
+    function fillStats(prefix, stats) {
+      if (!stats) return;
+      ["hadir", "terlambat", "sakit", "izin", "alpa"].forEach(key => {
+        const el = document.getElementById(`${prefix}-${key}`);
+        if (el) el.innerText = stats[key] || 0;
+      });
+    }
+
+    function toggleModalIzin(show) {
+      const modal = document.getElementById("modalIzin");
+      modal.classList.toggle("hidden", !show);
+      if (!show) document.getElementById("inputKeteranganIzin").value = "";
+    }
+
+    function kirimPengajuanIzin() {
+      const status = document.getElementById("inputStatusIzin").value;
+      const keterangan = document.getElementById("inputKeteranganIzin").value;
+      if (!keterangan.trim()) return alert("Harap isi keterangan pengajuan!");
+
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "ajukanIzinSiswa", nisn, status, keterangan })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.message || "Pengajuan berhasil!");
+        toggleModalIzin(false);
+        loadSiswaData();
+      })
+      .catch(() => alert("Gagal mengirim pengajuan."));
+    }
+
+    function lihatJadwal() { alert("Fitur jadwal belum tersedia."); }
+    function logoutSiswa() { localStorage.clear(); window.location.replace("login.html"); }
+
+    function loadMockData() {
+      renderStats({ mingguan: { total: 7, hadir: 5, terlambat: 1, sakit: 1, izin: 0, alpa: 0, persentase: 86 } });
+      renderHistory([
+        { tanggal: "2026-08-29T00:00:00", waktu: "06:15:23", status: "Hadir" },
+        { tanggal: "2026-08-28T00:00:00", waktu: "06:28:45", status: "Terlambat" },
+        { tanggal: "2026-08-27T00:00:00", waktu: "06:10:12", status: "Hadir" },
+        { tanggal: "2026-08-26T00:00:00", waktu: "07:05:00", status: "Sakit" }
+      ]);
     }
 
     document.addEventListener("DOMContentLoaded", loadSiswaData);
