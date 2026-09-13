@@ -1,1 +1,1 @@
-const API_URL = "https://billowing-hat-b2e1.raivanka7.workers.dev/api.php";
+const API_URL = "https://script.google.com/macros/s/AKfycbzUNayLthLLRwfms4CQHTqTKj3lKhyrhWwb7mOIbMHEIM4HkC0jbwVgy-MYJaV1WxNXcQ/exec";
