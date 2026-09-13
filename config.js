@@ -1,1 +1,1 @@
-const API_URL = "https://corsproxy.io/?" + encodeURIComponent("http://sentera-absensi.infinityfreeapp.com/api.php");
+const API_URL = "https://billowing-hat-b2e1.raivanka7.workers.dev/api.php";
