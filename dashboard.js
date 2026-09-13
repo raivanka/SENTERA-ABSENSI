@@ -1,5 +1,3 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzUNayLthLLRwfms4CQHTqTKj3lKhyrhWwb7mOIbMHEIM4HkC0jbwVgy-MYJaV1WxNXcQ/exec";
-
 function loadDashboardData() {
   // 1. Fetch Ringkasan Statistik
   fetch(`${API_URL}?action=getRekap`)
@@ -20,36 +18,36 @@ function loadDashboardData() {
       const tbody = document.getElementById('tabel-rekap-body');
       tbody.innerHTML = "";
 
-      if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-500">Belum ada data absensi.</td></tr>`;
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 font-mono">Belum ada data absensi.</td></tr>`;
         return;
       }
 
       data.forEach(item => {
         let statusBadge = "";
-        if (item.status === "Hadir") statusBadge = `<span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] border border-emerald-500/20 font-semibold">Hadir</span>`;
-        else if (item.status === "Terlambat") statusBadge = `<span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded text-[11px] border border-amber-500/20 font-semibold">Terlambat</span>`;
-        else if (item.status === "Sakit") statusBadge = `<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-[11px] border border-blue-500/20 font-semibold">Sakit</span>`;
-        else if (item.status === "Izin") statusBadge = `<span class="bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded text-[11px] border border-purple-500/20 font-semibold">Izin</span>`;
-        else statusBadge = `<span class="bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded text-[11px] border border-rose-500/20 font-semibold">Alpa</span>`;
+        if (item.status === "Hadir") statusBadge = `<span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-0.5 rounded-lg text-xs border border-emerald-500/20 font-bold">Hadir</span>`;
+        else if (item.status === "Terlambat") statusBadge = `<span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 px-2.5 py-0.5 rounded-lg text-xs border border-amber-500/20 font-bold">Terlambat</span>`;
+        else if (item.status === "Sakit") statusBadge = `<span class="bg-sky-500/10 text-sky-600 dark:text-sky-400 px-2.5 py-0.5 rounded-lg text-xs border border-sky-500/20 font-bold">Sakit</span>`;
+        else if (item.status === "Izin") statusBadge = `<span class="bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2.5 py-0.5 rounded-lg text-xs border border-purple-500/20 font-bold">Izin</span>`;
+        else statusBadge = `<span class="bg-rose-500/10 text-rose-600 dark:text-rose-400 px-2.5 py-0.5 rounded-lg text-xs border border-rose-500/20 font-bold">Alpa</span>`;
 
         const row = `
-          <tr class="hover:bg-slate-700/30 transition">
-            <td class="px-4 py-3 whitespace-nowrap">
-              <div class="font-medium text-white">${item.waktu}</div>
-              <div class="text-[10px] text-slate-400">${item.tanggal}</div>
+          <tr class="hover:bg-slate-100 dark:hover:bg-zinc-800/50 transition">
+            <td class="px-5 py-3.5 whitespace-nowrap">
+              <div class="font-bold text-slate-900 dark:text-white">${item.waktu}</div>
+              <div class="text-[10px] font-mono text-slate-400">${item.tanggal}</div>
             </td>
-            <td class="px-4 py-3">
-              <div class="font-semibold text-white">${item.nama}</div>
-              <div class="text-[10px] text-slate-400">${item.nisn}</div>
+            <td class="px-5 py-3.5">
+              <div class="font-bold text-slate-900 dark:text-white">${item.nama}</div>
+              <div class="text-[10px] font-mono text-slate-400">${item.nisn}</div>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap">${statusBadge}</td>
-            <td class="px-4 py-3 text-xs text-slate-400">${item.keterangan || "-"}</td>
-            <td class="px-4 py-3 text-center whitespace-nowrap space-x-1">
-               <button onclick="editData(${item.rowIndex}, '${escapeJS(item.nama)}', '${escapeJS(item.status)}', '${escapeJS(item.keterangan)}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 p-1.5 rounded-lg border border-amber-500/30 text-xs">
+            <td class="px-5 py-3.5 whitespace-nowrap">${statusBadge}</td>
+            <td class="px-5 py-3.5 text-xs text-slate-500 dark:text-zinc-400 hidden sm:table-cell">${item.keterangan || "-"}</td>
+            <td class="px-5 py-3.5 text-center whitespace-nowrap space-x-1">
+               <button onclick="editData(${item.rowIndex}, '${escapeJS(item.nama)}', '${escapeJS(item.status)}', '${escapeJS(item.keterangan)}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 p-1.5 rounded-lg border border-amber-500/30 text-xs transition active:scale-95">
                  ✏️ Edit
                </button>
-               <button onclick="hapusData(${item.rowIndex}, '${escapeJS(item.nama)}')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 p-1.5 rounded-lg border border-rose-500/30 text-xs">
+               <button onclick="hapusData(${item.rowIndex}, '${escapeJS(item.nama)}')" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 p-1.5 rounded-lg border border-rose-500/30 text-xs transition active:scale-95">
                  🗑️ Hapus
                </button>
             </td>
@@ -81,7 +79,7 @@ function editData(rowIndex, nama, currentStatus, currentKet) {
   .then(res => res.json())
   .then(res => {
     alert(res.message);
-    loadDashboardData(); // Reload tabel otomatis
+    loadDashboardData();
   });
 }
 
@@ -99,7 +97,7 @@ function hapusData(rowIndex, nama) {
     .then(res => res.json())
     .then(res => {
       alert(res.message);
-      loadDashboardData(); // Reload tabel otomatis
+      loadDashboardData();
     });
   }
 }

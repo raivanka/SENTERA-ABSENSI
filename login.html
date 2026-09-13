@@ -1,204 +1,168 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - E-Absensi</title>
+  <title>Login - E-Absensi Sentera</title>
 
-  <!-- Material Symbols -->
+  <!-- Google Material Symbols & Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS with Obsidian Aurora config -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script id="tailwind-config">
+  <script>
     tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#818cf8",
-            "on-primary": "#131e8c",
-            "primary-container": "#bdc2ff",
-            "on-primary-container": "#101b8a",
-            "on-primary-fixed": "#000767",
-            "on-primary-fixed-variant": "#2f3aa3",
-            "secondary": "#c7d2fe",
-            "on-secondary": "#242f52",
-            "secondary-container": "#3a456a",
-            "on-secondary-container": "#a9b4de",
-            "on-secondary-fixed": "#0d1a3c",
-            "on-secondary-fixed-variant": "#3a456a",
-            "tertiary": "#3cddc7",
-            "on-tertiary": "#003731",
-            "tertiary-container": "#00a896",
-            "on-tertiary-container": "#00352e",
-            "on-tertiary-fixed": "#00201c",
-            "on-tertiary-fixed-variant": "#005047",
-            "background": "#0b1326",
-            "on-background": "#dae2fd",
-            "surface": "#1e293b",
-            "on-surface": "#dae2fd",
-            "on-surface-variant": "#c6c5d5",
-            "surface-variant": "#2d3449",
-            "surface-container": "#171f33",
-            "surface-container-low": "#131b2e",
-            "surface-container-lowest": "#060e20",
-            "surface-container-high": "#222a3d",
-            "surface-container-highest": "#2d3449",
-            "surface-dim": "#0b1326",
-            "surface-bright": "#31394d",
-            "surface-tint": "#bdc2ff",
-            "surface-overlay": "#334155",
-            "outline": "#908f9e",
-            "outline-variant": "#454653",
-            "border-glow": "rgba(129, 140, 248, 0.15)",
-             "error": "#fb7185",
-            "on-error": "#690005",
-            "error-container": "#93000a",
-            "on-error-container": "#ffdad6",
-            "error-vibrant": "#fb7185"
-          },
-          borderRadius: {
-            "DEFAULT": "0.25rem",
-            "lg": "0.5rem",
-            "xl": "0.75rem",
-            "2xl": "1rem",
-            "3xl": "1.5rem",
-            "full": "9999px"
-          },
-          fontFamily: {
-            "body": ["Manrope", "sans-serif"],
-            "headline": ["Manrope", "sans-serif"],
-            "label": ["Manrope", "sans-serif"],
-            "headline-lg": ["Manrope", "sans-serif"],
-            "headline-md": ["Manrope", "sans-serif"],
-            "display-xl": ["Manrope", "sans-serif"],
-            "display-xl-mobile": ["Manrope", "sans-serif"],
-            "label-md": ["Manrope", "sans-serif"],
-            "label-sm": ["Manrope", "sans-serif"],
-            "body-lg": ["Manrope", "sans-serif"],
-            "body-md": ["Manrope", "sans-serif"]
-          },
-          fontSize: {
-            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
-            "label-md": ["14px", { lineHeight: "20px", fontWeight: "600" }],
-            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "700", letterSpacing: "0.05em" }],
-            "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
-            "headline-lg": ["32px", { lineHeight: "40px", fontWeight: "700" }],
-            "display-xl": ["64px", { lineHeight: "72px", fontWeight: "800", letterSpacing: "-0.02em" }],
-            "display-xl-mobile": ["40px", { lineHeight: "48px", fontWeight: "800", letterSpacing: "-0.02em" }]
-          },
-          spacing: {
-            "sm": "0.25rem",
-            "DEFAULT": "0.5rem",
-            "md": "0.75rem",
-            "lg": "1rem",
-            "xl": "1.5rem",
-            "full": "9999px",
-            "margin-mobile": "20px",
-            "margin-desktop": "64px",
-            "unit": "8px",
-            "gutter": "24px",
-            "container-max": "1280px",
-            "section-gap": "120px"
-          }
-        }
-      }
+      darkMode: 'class',
     }
   </script>
   <link rel="stylesheet" href="style.css">
+
   <style>
     body {
-      background: linear-gradient(135deg, #0b1326 0%, #060e20 100%);
       min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .glass-card-login {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
   </style>
 </head>
-<body class="flex justify-center p-margin-mobile md:p-margin-desktop text-on-surface items-start">
+<body class="bg-slate-50 text-slate-800 dark:bg-zinc-950 dark:text-slate-100 font-body-md antialiased min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-  <main class="w-full max-w-[480px] mt-8">
+  <!-- Background Ambient Ornaments -->
+  <div class="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-teal-500/10 dark:bg-teal-500/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+  <div class="absolute bottom-[-100px] right-[-100px] w-[300px] h-[300px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+
+  <!-- Header Ringkas -->
+  <header class="w-full max-w-[1280px] mx-auto px-5 md:px-8 py-6 flex justify-between items-center">
+    <a href="index.html" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
+      <span class="material-symbols-outlined text-sm">arrow_back</span>
+      <span>Halaman Utama</span>
+    </a>
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 border border-slate-200 dark:border-zinc-800 transition-all active:scale-95 flex items-center justify-center">
+      <span class="material-symbols-outlined text-xl" id="theme-icon">dark_mode</span>
+    </button>
+  </header>
+
+  <!-- Main Login Card Container -->
+  <main class="w-full max-w-[440px] mx-auto px-5 py-6 my-auto">
 
     <!-- Brand / Logo Area -->
-    <div class="text-center mb-10">
-      <div class="flex justify-center mb-6">
-        <img src="logo.jpeg" alt="E-Absensi Logo" class="w-20 h-20 rounded-xl shadow-lg">
+    <div class="text-center mb-8">
+      <div class="flex justify-center mb-4 relative">
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-teal-500 to-emerald-400 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
+          <img src="logo.jpeg" alt="E-Absensi Logo" class="relative w-20 h-20 rounded-2xl object-cover shadow-lg border-2 border-white dark:border-zinc-800">
+        </div>
       </div>
-      <h1 class="font-display-xl-mobile text-display-xl-mobile md:font-display-xl md:text-display-xl text-primary mb-2">E-Absensi</h1>
-      <p class="font-body-lg text-body-lg text-on-surface-variant">Sistem Kehadiran Terpadu</p>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+        E-Absensi <span class="text-teal-600 dark:text-teal-400">Sentera</span>
+      </h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Sistem Kehadiran Digital Terpadu</p>
     </div>
 
-    <!-- Login Card -->
-    <div class="glass-panel rounded-[24px] ambient-shadow p-8 md:p-12 border-glow">
-      <form onsubmit="handleLogin(event)" class="space-y-6">
+    <!-- Login Card Glass -->
+    <div class="glass-card-login bg-white/80 dark:bg-zinc-900/80 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-zinc-800 shadow-xl transition-all">
+      <form onsubmit="handleLogin(event)" class="space-y-5">
 
-        <!-- Tab Switch (Mahasiswa / Administrator) -->
-        <div class="flex gap-2 p-1 bg-surface-container-low rounded-lg mb-6">
-          <button type="button" id="tab-mahasiswa" onclick="switchTab('mahasiswa')" class="flex-1 py-2 rounded-md text-label-sm bg-secondary text-on-secondary transition-all">SISWA</button>
-          <button type="button" id="tab-administrator" onclick="switchTab('administrator')" class="flex-1 py-2 rounded-md text-label-sm text-on-surface-variant hover:text-primary transition-all">Administrator</button>
+        <!-- Tab Switch (Siswa / Administrator) -->
+        <div class="flex gap-1.5 p-1.5 bg-slate-100 dark:bg-zinc-950 rounded-2xl border border-slate-200 dark:border-zinc-800/80">
+          <button type="button" id="tab-mahasiswa" onclick="switchTab('mahasiswa')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-teal-600 dark:text-teal-400 shadow-sm transition-all">
+            SISWA
+          </button>
+          <button type="button" id="tab-administrator" onclick="switchTab('administrator')" class="flex-1 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-white transition-all">
+            ADMINISTRATOR
+          </button>
         </div>
 
-        <!-- Error Message (JS-controlled: id="error-msg", class="hidden") -->
-        <div id="error-msg" class="hidden mb-4 p-3 rounded-lg bg-error-container text-on-error-container text-label-sm flex items-center gap-2">
-          <span class="material-symbols-outlined text-[16px]">error</span>
+        <!-- Error Message Container -->
+        <div id="error-msg" class="hidden p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center gap-2">
+          <span class="material-symbols-outlined text-base shrink-0">error</span>
           <span id="error-text"></span>
         </div>
 
-        <!-- Username / ID Field (JS: id="username") -->
+        <!-- Username / NISN Field -->
         <div>
-          <label id="user-label" class="block font-label-md text-label-md text-on-surface-variant mb-2" for="username">NISN</label>
+          <label id="user-label" class="block text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="username">NISN</label>
           <div class="relative">
-            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-4 text-outline pointer-events-none">person</span>
-            <input class="w-full pl-12 pr-4 py-3 rounded-lg border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-md text-body-md text-on-surface placeholder:text-outline-variant" id="username" name="username" placeholder="Masukkan NISN Anda" required type="text">
+            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-lg pointer-events-none">person</span>
+            <input class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 focus:ring-1 focus:ring-teal-500 transition-all placeholder:text-slate-400" id="username" name="username" placeholder="Masukkan NISN Anda" required type="text">
           </div>
         </div>
 
-        <!-- Password Field (JS: id="password") -->ew
+        <!-- Password Field -->
         <div>
-          <label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="password">Kata Sandi</label>
+          <label class="block text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="password">Kata Sandi</label>
           <div class="relative">
-            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-4 text-outline pointer-events-none">lock</span>
-            <input type="password" id="password" name="password" required placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" class="w-full pl-12 pr-12 py-3 rounded-lg border border-surface-variant bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-md text-body-md text-on-surface placeholder:text-outline-variant">
-            <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center pr-4 text-outline hover:text-primary transition-colors focus:outline-none">
-              <span class="material-symbols-outlined" id="password-toggle-icon">visibility</span>
+            <span class="material-symbols-outlined absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-lg pointer-events-none">lock</span>
+            <input type="password" id="password" name="password" required placeholder="••••••••" class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:outline-none focus:border-teal-500 dark:focus:border-teal-400 focus:ring-1 focus:ring-teal-500 transition-all placeholder:text-slate-400">
+            <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors focus:outline-none">
+              <span class="material-symbols-outlined text-lg" id="password-toggle-icon">visibility</span>
             </button>
           </div>
         </div>
 
         <!-- Hint -->
-        <span class="text-[10px] text-outline block">*Untuk Siswa, password default menggunakan NISN.</span>
+        <span class="text-[11px] text-slate-400 dark:text-zinc-500 block font-mono">*Untuk Siswa, password default menggunakan NISN.</span>
 
         <!-- Remember Me & Forgot Password -->
-        <div class="flex items-center justify-between mt-4">
-          <div class="flex items-center">
-            <input class="w-4 h-4 text-primary bg-surface-container-lowest border-surface-variant rounded focus:ring-primary focus:ring-2" id="remember" name="remember" type="checkbox">
-            <label class="ml-2 font-label-sm text-label-sm text-on-surface-variant cursor-pointer" for="remember">Ingat saya</label>
-          </div>
-          <a class="font-label-sm text-label-sm text-primary hover:underline transition-colors" href="#">Lupa sandi?</a>
+        <div class="flex items-center justify-between text-xs">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input class="w-4 h-4 text-teal-600 bg-slate-100 dark:bg-zinc-950 border-slate-300 dark:border-zinc-800 rounded focus:ring-teal-500 focus:ring-1" id="remember" name="remember" type="checkbox">
+            <span class="text-slate-600 dark:text-zinc-400 font-medium">Ingat saya</span>
+          </label>
+          <a class="text-teal-600 dark:text-teal-400 hover:underline font-semibold cursor-pointer" onclick="handleLupaSandi()">Lupa sandi?</a>
         </div>
 
-        <!-- Submit Button (JS: id="btn-submit") -->
-        <button type="submit" id="btn-submit" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.01] active:scale-95 mt-8 flex items-center justify-center gap-2 group">
-          <span>Masuk ke Portal</span>
-          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+        <!-- Submit Button -->
+        <button type="submit" id="btn-submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs py-3 rounded-xl transition-all duration-150 active:scale-95 shadow-md flex items-center justify-center gap-2 group cursor-pointer mt-4">
+          <span id="btn-text">Masuk ke Portal</span>
+          <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" id="btn-icon">arrow_forward</span>
         </button>
       </form>
     </div>
 
-    <!-- Footer / Support -->
-    <div class="text-center mt-8">
-      <p class="font-label-sm text-label-sm text-outline">
-        Butuh bantuan teknis? <a class="text-primary hover:underline transition-colors" href="#">Hubungi Administrator</a>
+    <!-- Hubungi Admin Link -->
+    <div class="text-center mt-6">
+      <p class="text-xs text-slate-400 dark:text-zinc-600 font-mono">
+        Butuh bantuan teknis? <a class="text-teal-600 dark:text-teal-400 font-semibold hover:underline" href="https://wa.me/6285624494049?text=Halo%20Admin,%20saya%20butuh%20bantuan%20teknis%20login%20E-Absensi%20Sentera" target="_blank">Hubungi Admin</a>
       </p>
     </div>
 
   </main>
 
-  <!-- Scripts -->
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzUNayLthLLRwfms4CQHTqTKj3lKhyrhWwb7mOIbMHEIM4HkC0jbwVgy-MYJaV1WxNXcQ/exec";
+  <!-- Footer Bottom -->
+  <footer class="text-center py-4 text-[11px] font-mono text-slate-400 dark:text-zinc-600">
+    &copy; 2026 E-Absensi Sentera System
+  </footer>
 
+  <!-- External Script Config & Login Logic -->
+  <script src="config.js"></script>
+  <script>
     let currentRole = "mahasiswa";
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon').textContent = 'light_mode';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('theme-icon').textContent = 'dark_mode';
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      document.getElementById('theme-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
 
     function switchTab(role) {
       currentRole = role;
@@ -209,48 +173,68 @@
       const input = document.getElementById("username");
 
       if (role === "mahasiswa") {
-        btnMhs.classList.remove("text-on-surface-variant", "hover:text-primary");
-        btnMhs.classList.add("bg-secondary", "text-on-secondary");
-        btnAdm.classList.remove("bg-secondary", "text-on-secondary");
-        btnAdm.classList.add("text-on-surface-variant", "hover:text-primary");
+        btnMhs.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-teal-600 dark:text-teal-400 shadow-sm transition-all";
+        btnAdm.className = "flex-1 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-white transition-all";
         label.textContent = "NISN";
         input.placeholder = "Masukkan NISN Anda";
       } else {
-        btnMhs.classList.remove("bg-secondary", "text-on-secondary");
-        btnMhs.classList.add("text-on-surface-variant", "hover:text-primary");
-        btnAdm.classList.remove("text-on-surface-variant", "hover:text-primary");
-        btnAdm.classList.add("bg-secondary", "text-on-secondary");
-        label.textContent = "Username";
+        btnAdm.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-white dark:bg-zinc-900 text-teal-600 dark:text-teal-400 shadow-sm transition-all";
+        btnMhs.className = "flex-1 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-white transition-all";
+        label.textContent = "USERNAME";
         input.placeholder = "Masukkan Username";
       }
 
-      /* Clear error on tab switch */
       document.getElementById("error-text").innerText = "";
       document.getElementById("error-msg").classList.add("hidden");
     }
 
     function handleLogin(e) {
       e.preventDefault();
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const rememberChecked = document.getElementById("remember").checked; // FIX VARIABEL
       const errorMsg = document.getElementById("error-msg");
       const btn = document.getElementById("btn-submit");
+      const btnText = document.getElementById("btn-text");
+      const btnIcon = document.getElementById("btn-icon");
 
       errorMsg.classList.add("hidden");
-      btn.innerText = "Memeriksa...";
+      btnText.innerText = "Memeriksa...";
+      btnIcon.textContent = "sync";
+      btnIcon.classList.add("animate-spin");
       btn.disabled = true;
 
+      // FIX FETCH: Menggunakan redirect 'follow' & parsing text
       fetch(API_URL, {
         method: "POST",
+        mode: "cors",
+        redirect: "follow",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({ action: "login", username: user, password: pass })
       })
-      .then(res => res.json())
-      .then(data => {
-        btn.innerText = "Masuk ke Portal";
+      .then(res => res.text())
+      .then(textData => {
+        let data;
+        try {
+          data = JSON.parse(textData);
+        } catch(err) {
+          throw new Error("Format respon server tidak valid");
+        }
+
+        btnText.innerText = "Masuk ke Portal";
+        btnIcon.textContent = "arrow_forward";
+        btnIcon.classList.remove("animate-spin");
         btn.disabled = false;
 
         if (data.status === "success") {
+          if (rememberChecked) {
+            localStorage.setItem("savedUser", user);
+            localStorage.setItem("rememberMe", "true");
+          } else {
+            localStorage.removeItem("savedUser");
+            localStorage.removeItem("rememberMe");
+          }
+
           localStorage.setItem("sessionToken", data.token);
           localStorage.setItem("userRole", data.role);
 
@@ -263,12 +247,15 @@
             window.location.href = "siswa.html";
           }
         } else {
-          document.getElementById("error-text").innerText = data.message;
+          document.getElementById("error-text").innerText = data.message || "Gagal masuk";
           errorMsg.classList.remove("hidden");
         }
       })
       .catch(err => {
-        btn.innerText = "Masuk ke Portal";
+        console.error("Login Error:", err);
+        btnText.innerText = "Masuk ke Portal";
+        btnIcon.textContent = "arrow_forward";
+        btnIcon.classList.remove("animate-spin");
         btn.disabled = false;
         document.getElementById("error-text").innerText = "Gagal terhubung ke server!";
         errorMsg.classList.remove("hidden");
@@ -286,6 +273,28 @@
         icon.textContent = "visibility";
       }
     }
+
+    function handleLupaSandi() {
+      if (currentRole === "mahasiswa") {
+        alert("Untuk Siswa, Kata Sandi default adalah Nomor NISN Anda.\n\nJika password pernah diubah dan Anda lupa, silakan hubungi Wali Kelas / Admin melalui tombol di bawah.");
+      } else {
+        const noWA = "6285624494049";
+        const pesan = encodeURIComponent("Halo Admin, saya lupa kata sandi untuk akun Administrator E-Absensi Sentera.");
+        window.open(`https://wa.me/${noWA}?text=${pesan}`, "_blank");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      initTheme();
+
+      if (localStorage.getItem("rememberMe") === "true") {
+        const savedUser = localStorage.getItem("savedUser");
+        if (savedUser) {
+          document.getElementById("username").value = savedUser;
+          document.getElementById("remember").checked = true;
+        }
+      }
+    });
   </script>
 </body>
 </html>
